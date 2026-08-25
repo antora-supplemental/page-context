@@ -1,0 +1,44 @@
+{
+  "name": "@antora-supplemental/page-context",
+  "version": "0.1.0",
+  "description": "Asciidoctor/Antora extension: render Audience, Usage context, and author credits from page-* attributes",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js"
+  },
+  "files": [
+    "lib/**/*",
+    "README.adoc",
+    "CHANGELOG.adoc",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "license": "MIT",
+  "keywords": [
+    "antora",
+    "asciidoctor",
+    "asciidoc",
+    "extension",
+    "page-attributes",
+    "audience",
+    "author",
+    "metadata"
+  ],
+  "homepage": "https://github.com/antora-supplemental/page-context",
+  "bugs": {
+    "url": "https://github.com/antora-supplemental/page-context/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antora-supplemental/page-context.git"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@asciidoctor/core": "^3.0.4"
+  },
+  "packageManager": "pnpm@10.30.3"
+}

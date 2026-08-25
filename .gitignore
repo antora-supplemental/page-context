@@ -1,0 +1,11 @@
+*
+!.gitignore
+!LICENSE
+!README.adoc
+!CHANGELOG.adoc
+!package.json
+!pnpm-lock.yaml
+!lib/
+!lib/**
+!test/
+!test/**

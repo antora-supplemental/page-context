@@ -1,0 +1,5 @@
+= Changelog
+
+== 0.1.0 — 2026-08-25
+
+* Initial release: render `page-audience`, `page-usage-context`, `page-orig-author`, `page-last-author`, `page-last-edited` as lead + footer asides.

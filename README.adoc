@@ -1,0 +1,59 @@
+= page-context
+:description: Asciidoctor/Antora extension that formats Audience, Usage context, and author credits from page-* attributes.
+
+Audience:: Antora / AsciiDoc authors who want page metadata rendered without hand-written lead/footer markup.
+Usage context:: Register under `asciidoc.extensions` in an Antora playbook (or Asciidoctor.js `extension_registry`).
+
+Nothing on npm matched Dev-Centr’s schema (audience + usage context + original/latest authors with agent-on-behalf-of strings). This package *is* that schema.
+
+== Install
+
+[source,bash]
+----
+pnpm add @antora-supplemental/page-context
+----
+
+Until published, use a path / `file:` dependency from a local clone.
+
+== Playbook
+
+[source,yaml]
+----
+asciidoc:
+  extensions:
+    - '@antora-supplemental/page-context'
+----
+
+== Page header schema
+
+[source,asciidoc]
+----
+= Page title
+:description: Short SEO blurb (optional; not rendered by this extension).
+:page-audience: New Dev-Centr members adopting agent-rules
+:page-usage-context: Full teaching page on the docs hub (optional)
+:page-orig-author: Ryan Johnson
+:page-last-author: Cursor agent on behalf of Ryan Johnson
+:page-last-edited: 2026-08-25
+----
+
+| Attribute | Required | Rendered as |
+| --- | --- | --- |
+| `page-audience` | for lead | Audience |
+| `page-usage-context` | no | Usage context |
+| `page-orig-author` | for footer | Original author (set once) |
+| `page-last-author` | for footer | Latest contributor; agent-assisted → `{product} on behalf of {human}` |
+| `page-last-edited` | no | Appended to latest as `(YYYY-MM-DD)` |
+
+Do **not** also paste hand-written `Audience::` / author labeled lists when this extension is active — attributes only.
+
+== Behavior
+
+* Lead aside prepended when audience and/or usage context is set.
+* Footer aside appended when original and/or latest author is set.
+* Idempotent if a block with role `page-context-lead` / `page-context-footer` already exists.
+* Injects minimal CSS via DocInfo `head`.
+
+== Related policy
+
+Dev-Centr agent-rules: `general/documentation.md` (Audience / POV + Author credits).
