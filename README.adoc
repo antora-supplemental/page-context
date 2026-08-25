@@ -1,19 +1,25 @@
 = page-context
-:description: Asciidoctor/Antora extension that formats Audience, Usage context, and author credits from page-* attributes.
+:description: Asciidoctor/Antora extension that formats page orientation, classification, authorship, rights, and related metadata from page-* attributes.
+:page-audience: Antora / AsciiDoc authors who want page metadata rendered without hand-written lead/footer markup
+:page-usage-context: Register under `asciidoc.extensions` in an Antora playbook (or Asciidoctor.js `extension_registry`)
+:page-doc-type: reference
+:page-status: published
+:page-keywords: antora, asciidoctor, metadata, dublin-core, front-matter
+:page-license: MIT
+:page-orig-author: Ryan Johnson
+:page-last-author: Cursor agent on behalf of Ryan Johnson
+:page-last-edited: 2026-08-25
+:page-lang: en
 
-Audience:: Antora / AsciiDoc authors who want page metadata rendered without hand-written lead/footer markup.
-Usage context:: Register under `asciidoc.extensions` in an Antora playbook (or Asciidoctor.js `extension_registry`).
-
-Nothing on npm matched Dev-Centr’s schema (audience + usage context + original/latest authors with agent-on-behalf-of strings). This package *is* that schema.
+Renders **Dublin Core–style**, Quarto/SSG, AsciiDoc revision, and Diátaxis-oriented metadata from `page-*` attributes into a lead aside, footer aside, and HTML `<meta>` tags.
 
 == Install
 
 [source,bash]
 ----
-pnpm add @antora-supplemental/page-context
+pnpm add -D github:antora-supplemental/page-context#main
+# after npm publish: pnpm add -D @antora-supplemental/page-context
 ----
-
-Until published, use a path / `file:` dependency from a local clone.
 
 == Playbook
 
@@ -24,36 +30,156 @@ asciidoc:
     - '@antora-supplemental/page-context'
 ----
 
-== Page header schema
+== Minimal house schema (Dev-Centr)
 
 [source,asciidoc]
 ----
 = Page title
-:description: Short SEO blurb (optional; not rendered by this extension).
+:description: Short SEO blurb (Antora; not owned by this extension).
 :page-audience: New Dev-Centr members adopting agent-rules
-:page-usage-context: Full teaching page on the docs hub (optional)
+:page-usage-context: Full teaching page on the docs hub
 :page-orig-author: Ryan Johnson
 :page-last-author: Cursor agent on behalf of Ryan Johnson
 :page-last-edited: 2026-08-25
 ----
 
-| Attribute | Required | Rendered as |
-| --- | --- | --- |
-| `page-audience` | for lead | Audience |
-| `page-usage-context` | no | Usage context |
-| `page-orig-author` | for footer | Original author (set once) |
-| `page-last-author` | for footer | Latest contributor; agent-assisted → `{product} on behalf of {human}` |
-| `page-last-edited` | no | Appended to latest as `(YYYY-MM-DD)` |
+Agent-assisted credit:: `{product} on behalf of {human}`
 
-Do **not** also paste hand-written `Audience::` / author labeled lists when this extension is active — attributes only.
+Do **not** also paste hand-written `Audience::` / author labeled lists when this extension is active.
+
+== Full attribute catalog
+
+Only set attributes render. Aliases resolve to the same label (canonical wins if both are set).
+
+=== Lead (orientation + classification + status)
+
+[cols="2,2,3"]
+|===
+| Attribute | Alias of | Label
+
+| `page-audience` | — | Audience
+| `page-usage-context` | — | Usage context
+| `page-role` | — | Role
+| `page-doc-type` | — | Document type
+| `page-type` | `page-doc-type` | Document type
+| `page-diataxis` | — | Diátaxis (`tutorial` / `how-to` / `explanation` / `reference`)
+| `page-level` | — | Level
+| `page-difficulty` | `page-level` | Level
+| `page-prerequisites` | — | Prerequisites
+| `page-requires` | `page-prerequisites` | Prerequisites
+| `page-abstract` | — | Abstract
+| `page-summary` | `page-abstract` | Abstract
+| `page-tl-dr` | — | TL;DR
+| `page-reading-time` | — | Reading time
+| `page-estimated-time` | — | Estimated time
+| `page-duration` | `page-estimated-time` | Duration
+| `page-keywords` | — | Keywords
+| `page-tags` | — | Tags
+| `page-category` | — | Category
+| `page-categories` | `page-category` | Categories
+| `page-topic` | — | Topic
+| `page-subject` | `page-topic` | Subject
+| `page-series` | — | Series
+| `page-collection` | `page-series` | Collection
+| `page-part-of` | — | Part of
+| `page-status` | — | Status (`draft` / `review` / `published` / `deprecated` / …)
+| `page-content-status` | `page-status` | Content status
+| `page-maturity` | — | Maturity
+| `page-stability` | — | Stability
+| `page-lifecycle` | — | Lifecycle
+| `page-draft` | — | Draft
+| `page-deprecated` | — | Deprecated
+| `page-replaced-by` | — | Replaced by
+| `page-supersedes` | — | Supersedes
+| `page-expires` | — | Expires
+| `page-valid-until` | `page-expires` | Valid until
+|===
+
+=== Footer (people, dates, rights, locale, identifiers)
+
+[cols="2,2,3"]
+|===
+| Attribute | Alias of | Label
+
+| `page-orig-author` | — | Original author (set once)
+| `page-creator` | `page-orig-author` | Original author
+| `page-author` | — | Author
+| `page-authors` | — | Authors
+| `page-last-author` | — | Latest contributor
+| `page-last-modified-by` | `page-last-author` | Latest contributor
+| `page-contributors` | — | Contributors
+| `page-editor` | — | Editor
+| `page-reviewer` | — | Reviewer
+| `page-reviewers` | `page-reviewer` | Reviewers
+| `page-translator` | — | Translator
+| `page-maintainer` | — | Maintainer
+| `page-owner` | — | Owner
+| `page-contact` | — | Contact
+| `page-email` | — | Email
+| `page-orcid` | — | ORCID
+| `page-affiliation` | — | Affiliation
+| `page-organization` | `page-affiliation` | Organization
+| `page-created` | — | Created
+| `page-date-created` | `page-created` | Created
+| `page-published` | — | Published
+| `page-date-published` | `page-published` | Published
+| `page-date` | — | Date
+| `page-last-edited` | — | Last edited (folded into latest contributor when both set)
+| `page-last-modified` | `page-last-edited` | Last modified
+| `page-revised` | — | Revised
+| `page-revdate` | `page-revised` | Revision date
+| `page-revision` | — | Revision
+| `page-revnumber` | `page-revision` | Revision
+| `page-version` | — | Doc version
+| `page-edition` | — | Edition
+| `page-license` | — | License
+| `page-licence` | `page-license` | License
+| `page-spdx` | — | SPDX
+| `page-copyright` | — | Copyright
+| `page-rights` | — | Rights
+| `page-attribution` | — | Attribution
+| `page-funding` | — | Funding
+| `page-sponsor` | `page-funding` | Sponsor
+| `page-acknowledgements` | — | Acknowledgements
+| `page-lang` | — | Language
+| `page-language` | `page-lang` | Language
+| `page-locale` | — | Locale
+| `page-coverage` | — | Coverage
+| `page-region` | — | Region
+| `page-geo` | `page-coverage` | Coverage
+| `page-id` | — | Identifier
+| `page-identifier` | `page-id` | Identifier
+| `page-doi` | — | DOI
+| `page-isbn` | — | ISBN
+| `page-issn` | — | ISSN
+| `page-url` | — | URL
+| `page-canonical` | `page-url` | Canonical URL
+| `page-source` | — | Source
+| `page-origin` | `page-source` | Source
+| `page-see-also` | — | See also
+| `page-related` | `page-see-also` | Related
+| `page-parent` | — | Parent
+| `page-next` | — | Next
+| `page-prev` | — | Previous
+| `page-previous` | `page-prev` | Previous
+| `page-robots` | — | (HTML meta `robots` only)
+| `page-schema-version` | — | Set automatically
+|===
+
+Inspired by Dublin Core, Quarto/Pandoc front matter, AsciiDoc `author`/`revdate`/`revnumber`, Open Graph / citation_* meta, and common SSG keys (Hugo/Jekyll/MkDocs).
+
+== HTML meta
+
+When present, values are also emitted as `<meta>` tags (`author`, `keywords`, `dcterms.*`, `og:*`, `article:*`, `citation_*`, `robots`). Antora’s own `:description:` continues to feed the usual description meta via Antora — use `page-abstract` when you want this extension to emit description as well.
 
 == Behavior
 
-* Lead aside prepended when audience and/or usage context is set.
-* Footer aside appended when original and/or latest author is set.
+* Lead aside prepended when any lead field is set.
+* Footer aside appended when any footer field is set.
 * Idempotent if a block with role `page-context-lead` / `page-context-footer` already exists.
-* Injects minimal CSS via DocInfo `head`.
+* Injects CSS + meta via DocInfo `head`.
 
-== Related policy
+== Related
 
-Dev-Centr agent-rules: `general/documentation.md` (Audience / POV + Author credits).
+* Registry card: link:antora-registry.md[]
+* Dev-Centr policy: `general/documentation.md` in https://github.com/dev-centr/agent-rules[dev-centr/agent-rules]

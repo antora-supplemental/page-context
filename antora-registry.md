@@ -1,24 +1,24 @@
 ---
 name: "Page context"
-description: "Render Audience, Usage context, and original/latest author credits from page-* attributes."
+description: "Render audience, usage, authorship, rights, and related page-* metadata as lead/footer asides plus HTML meta."
 ---
 
 # Overview
 
-Dev-Centr (and similar) docs need a stable way to declare **who a page is for** and **who wrote it**, without hand-duplicating labeled lists on every page.
+Dev-Centr (and similar) docs need a stable way to declare **who a page is for**, **what kind of page it is**, and **who wrote it**, without hand-duplicating labeled lists.
 
-This Asciidoctor extension (register under Antora `asciidoc.extensions`) reads document attributes and injects:
+This Asciidoctor extension (register under Antora `asciidoc.extensions`) reads a large `page-*` attribute catalog — oriented toward Dublin Core, Quarto/SSG front matter, AsciiDoc revision fields, and Diátaxis — and injects:
 
-- A **lead** aside from `page-audience` / `page-usage-context`
-- A **footer** aside from `page-orig-author` / `page-last-author` (optional `page-last-edited`)
+- A **lead** aside (audience, usage, type, status, keywords, …)
+- A **footer** aside (authors, dates, license, identifiers, …)
+- Matching **HTML `<meta>`** tags (`dcterms.*`, `og:*`, `article:*`, `citation_*`, …)
 
-Agent-assisted authorship uses the string shape `{product} on behalf of {human}` (for example `Cursor agent on behalf of Ryan Johnson`).
+Agent-assisted authorship uses `{product} on behalf of {human}`.
 
 ## Install
 
 ```bash
 pnpm add -D github:antora-supplemental/page-context#main
-# or, after npm publish: pnpm add -D @antora-supplemental/page-context
 ```
 
 ## Playbook
@@ -29,7 +29,7 @@ asciidoc:
     - '@antora-supplemental/page-context'
 ```
 
-## Page header schema
+## Minimal header
 
 ```asciidoc
 = Page title
@@ -40,7 +40,7 @@ asciidoc:
 :page-last-edited: 2026-08-25
 ```
 
-Do **not** also paste hand-written `Audience::` / author labeled lists when this extension is active.
+Full catalog: see the repository README.
 
 ## Links
 
