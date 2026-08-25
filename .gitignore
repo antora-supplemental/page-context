@@ -3,6 +3,7 @@
 !LICENSE
 !README.adoc
 !CHANGELOG.adoc
+!antora-registry.md
 !package.json
 !pnpm-lock.yaml
 !lib/

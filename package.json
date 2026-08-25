@@ -18,6 +18,7 @@
   "license": "MIT",
   "keywords": [
     "antora",
+    "antora-extension",
     "asciidoctor",
     "asciidoc",
     "extension",
