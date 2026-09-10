@@ -1,5 +1,11 @@
 = Changelog
 
+== 0.6.2 — 2026-09-10
+
+* Lead-table label for `page-audience` is **Audience role** (not bare Audience) — role = permissions / access / usage expectations.
+* Attribute name stays `page-audience` (Dublin Core `dcterms.audience` unchanged).
+* Schema version attribute `0.6.2`.
+
 == 0.6.1 — 2026-09-10
 
 * **Lead nesting:** outer `.page-context-lead` is seamless (no border/wash); byline stays a child of that zone; inner `.page-context-panel` wraps only the key/value table.

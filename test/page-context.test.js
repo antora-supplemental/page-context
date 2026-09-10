@@ -37,7 +37,7 @@ Body paragraph.
     assert.match(html, /2026-08-25/)
     assert.match(html, /page-context-table/)
     assert.match(html, /page-context-panel/)
-    assert.match(html, /<th scope="row">Audience<\/th>/)
+    assert.match(html, /<th scope="row">Audience role<\/th>/)
     assert.match(html, /New org members/)
     assert.match(html, /<th scope="row">Usage context<\/th>/)
     assert.match(html, /Docs hub teaching page/)
@@ -97,7 +97,7 @@ Hi.
     assert.match(html, /name="keywords" content="antora, metadata"/)
     assert.match(html, /name="dcterms.audience" content="Maintainers"/)
     assert.match(html, /name="citation_doi" content="10.example\/demo"/)
-    assert.match(html, /name="page-context-schema" content="0\.6\.1"/)
+    assert.match(html, /name="page-context-schema" content="0\.6\.2"/)
   })
 
   it('honors aliases (page-type → Document type) in footer', () => {
@@ -128,7 +128,7 @@ Hi.
 
   it('escapes HTML in attribute values', () => {
     const html = _internal.buildAsideHtml('page-context-lead', [
-      { label: 'Audience', value: '<script>x</script>', html: false },
+      { label: 'Audience role', value: '<script>x</script>', html: false },
     ])
     assert.match(html, /&lt;script&gt;/)
     assert.doesNotMatch(html, /<script>/)
@@ -159,7 +159,7 @@ Hi.
     assert.equal(byAttr['page-last-edited'], 'footer')
     assert.equal(byAttr['page-license'], 'footer')
     assert.equal(byAttr['page-doi'], 'footer')
-    assert.equal(_internal.SCHEMA_VERSION, '0.6.1')
+    assert.equal(_internal.SCHEMA_VERSION, '0.6.2')
   })
 
   it('ships independent table CSS without zebra and with byline/avatar', () => {
@@ -183,7 +183,7 @@ Hi.
   it('buildAsideHtml keeps byline outside the table and panel', () => {
     const html = _internal.buildAsideHtml(
       'page-context-lead',
-      [{ label: 'Audience', value: 'Readers', html: false }],
+      [{ label: 'Audience role', value: 'Readers', html: false }],
       { bylineHtml: '<p class="page-context-byline">Last updated <time>2026-09-10</time></p>' }
     )
     assert.match(html, /^<aside class="page-context page-context-lead"/)
@@ -205,7 +205,7 @@ Welcome body.
 `)
     assert.doesNotMatch(html, /aside class="page-context page-context-lead"/)
     assert.doesNotMatch(html, /<p class="page-context-byline"/)
-    assert.doesNotMatch(html, /<th scope="row">Audience<\/th>/)
+    assert.doesNotMatch(html, /<th scope="row">Audience role<\/th>/)
     assert.doesNotMatch(html, /Usage context/)
     assert.match(html, /aside class="page-context page-context-footer"/)
     assert.match(html, /Original author/)
@@ -225,7 +225,7 @@ Welcome body.
 
 Hi.
 `)
-    assert.doesNotMatch(html, /<th scope="row">Audience<\/th>/)
+    assert.doesNotMatch(html, /<th scope="row">Audience role<\/th>/)
     assert.doesNotMatch(html, /Usage context/)
     assert.doesNotMatch(html, /aside class="page-context page-context-lead"/)
     assert.match(html, /aside class="page-context page-context-footer"/)

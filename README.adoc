@@ -58,9 +58,9 @@ Agent-assisted credit (source attr):: `{product} on behalf of {human}`
 +
 Displayed as:: `{human} (via {product})` — e.g. `Ryan Johnson (via Cursor)`
 
-Do **not** also paste hand-written `Audience::` / author labeled lists when this extension is active.
+Do **not** also paste hand-written `Audience role::` / author labeled lists when this extension is active.
 
-== Layout (0.6.1)
+== Layout (0.6.2)
 
 [cols="1,3"]
 |===
@@ -73,13 +73,13 @@ Do **not** also paste hand-written `Audience::` / author labeled lists when this
 | `Last updated {date} by {avatar} {name}` — child of the lead aside, **sibling** of the panel (not inside the table).
 
 | **Lead panel** (`.page-context-panel`)
-| Subtle border + wash + padding wrapping **only** the key/value table (Audience, Usage, Status, Source, …).
+| Subtle border + wash + padding wrapping **only** the key/value table (Audience role, Usage, Status, Source, …).
 
 | **Footer** (`.page-context-footer`)
 | Single panel aside: authorship, classification (Document type, Diátaxis, **Keywords**, Tags, …), dates not shown in the byline, rights / identifiers / locale.
 
 | **Component home**
-| No byline / no Audience / Usage chrome; authorship + dates in the footer only.
+| No byline / no Audience role / Usage chrome; authorship + dates in the footer only.
 |===
 
 `@antora-supplemental/page-edit` may add a **Source** row (`View | Edit`) to the lead table. The VCS provider mark sits on the **Source** key; the value cell is text-only links.
@@ -106,7 +106,7 @@ Only set attributes render. Aliases resolve to the same label (canonical wins if
 |===
 | Attribute | Alias of | Label
 
-| `page-audience` | — | Audience
+| `page-audience` | — | Audience role
 | `page-usage-context` | — | Usage context
 | `page-role` | — | Role
 | `page-level` | — | Level
@@ -234,7 +234,7 @@ When present, values are also emitted as `<meta>` tags (`author`, `keywords`, `d
 
 === Component home surface
 
-Org **component start pages** (and hub portal homes) must not show Audience / Usage context chrome — even when those `page-*` attrs are set (agents / HTML meta still use them). Authorship and dates render in the **footer** only.
+Org **component start pages** (and hub portal homes) must not show Audience role / Usage context chrome — even when those `page-*` attrs are set (agents / HTML meta still use them). Authorship and dates render in the **footer** only.
 
 Detect when either:
 
