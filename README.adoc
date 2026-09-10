@@ -1,23 +1,25 @@
 = page-context
-:description: Asciidoctor/Antora extension that formats page orientation, classification, authorship, rights, and related metadata from page-* attributes.
+:description: Asciidoctor/Antora extension that formats page orientation, authorship, classification, and related metadata from page-* attributes — including keyword links to filtered article listings.
 :page-audience: Antora / AsciiDoc authors who want page metadata rendered without hand-written lead/footer markup
-:page-usage-context: Register under `asciidoc.extensions` in an Antora playbook (or Asciidoctor.js `extension_registry`)
+:page-usage-context: Register under `asciidoc.extensions` in an Antora playbook (or Asciidoctor.js `extension_registry`); optional Antora helper for keyword index pages
 :page-doc-type: reference
 :page-status: published
-:page-keywords: antora, asciidoctor, metadata, dublin-core, front-matter
+:page-keywords: antora, asciidoctor, metadata, dublin-core, front-matter, keywords
 :page-license: MIT
 :page-orig-author: Ryan Johnson
 :page-last-author: Cursor agent on behalf of Ryan Johnson
-:page-last-edited: 2026-08-25
+:page-last-edited: 2026-09-10
 :page-lang: en
 
-Renders **Dublin Core–style**, Quarto/SSG, AsciiDoc revision, and Diátaxis-oriented metadata from `page-*` attributes into a lead aside (orientation + provenance), an optional footer aside (colophon), and HTML `<meta>` tags.
+Renders **Dublin Core–style**, Quarto/SSG, AsciiDoc revision, and Diátaxis-oriented metadata from `page-*` attributes into a slim teaching byline + lead table (orientation), a footer aside (authorship / classification / colophon), and HTML `<meta>` tags.
+
+Schema version:: `0.6.0`
 
 == Install
 
 [source,bash]
 ----
-pnpm add -D github:antora-supplemental/page-context#main
+pnpm add -D github:antora-supplemental/page-context#v0.6.0
 # after npm publish: pnpm add -D @antora-supplemental/page-context
 ----
 
@@ -25,9 +27,18 @@ pnpm add -D github:antora-supplemental/page-context#main
 
 [source,yaml]
 ----
+antora:
+  extensions:
+    # Optional: generate /{component}/keywords/{slug}/ listing pages
+    - require: '@antora-supplemental/page-context/antora'
+      component: home
+      path: keywords
 asciidoc:
   extensions:
     - '@antora-supplemental/page-context'
+  attributes:
+    page-context-active: ''
+    page-context-keyword-base: '/home/keywords'
 ----
 
 == Minimal house schema (Dev-Centr)
@@ -40,18 +51,53 @@ asciidoc:
 :page-usage-context: Full teaching page on the docs hub
 :page-orig-author: Ryan Johnson
 :page-last-author: Cursor agent on behalf of Ryan Johnson
-:page-last-edited: 2026-08-25
+:page-last-edited: 2026-09-10
 ----
 
-Agent-assisted credit:: `{product} on behalf of {human}`
+Agent-assisted credit (source attr):: `{product} on behalf of {human}`
++
+Displayed as:: `{human} (via {product})` — e.g. `Ryan Johnson (via Cursor)`
 
 Do **not** also paste hand-written `Audience::` / author labeled lists when this extension is active.
+
+== Layout (0.6)
+
+[cols="1,3"]
+|===
+| Zone | Contents
+
+| **Byline** (teaching pages)
+| `Last updated {date} by {avatar} {name}` — above the lead table when a date is known.
+
+| **Lead table**
+| Orientation / status only: Audience, Usage context, Level, Prerequisites, Status, …
+
+| **Footer table**
+| Authorship, classification (Document type, Diátaxis, **Keywords**, Tags, …), dates not shown in the byline, rights / identifiers / locale.
+
+| **Component home**
+| No byline / no Audience / Usage chrome; authorship + dates in the footer only.
+|===
+
+`@antora-supplemental/page-edit` may add a **Source** row (`View | Edit`) to the lead table.
+
+== Keyword links
+
+Footer **Keywords** / **Tags** values are split on commas and rendered as links:
+
+* Class: `page-context-keyword` (muted: `color: inherit`; underline only — not accent/link-blue)
+* URL: `{page-context-keyword-base}/{slug}/` (default base `/home/keywords`)
+* Slug: lowercased, non-alnum → `-` (e.g. `Search Engine Optimization` → `search-engine-optimization`)
+
+Register `@antora-supplemental/page-context/antora` so those URLs resolve to generated listing pages: articles that use the keyword, grouped by component (a filtered tree). An index is published at `{base}/` (e.g. `/home/keywords/`).
+
+Set `page-context-keyword-base` to match the host component + path (no trailing slash).
 
 == Full attribute catalog
 
 Only set attributes render. Aliases resolve to the same label (canonical wins if both are set).
 
-=== Lead (orientation + classification + status + provenance)
+=== Lead (orientation + status)
 
 [cols="2,2,3"]
 |===
@@ -60,9 +106,6 @@ Only set attributes render. Aliases resolve to the same label (canonical wins if
 | `page-audience` | — | Audience
 | `page-usage-context` | — | Usage context
 | `page-role` | — | Role
-| `page-doc-type` | — | Document type
-| `page-type` | `page-doc-type` | Document type
-| `page-diataxis` | — | Diátaxis (`tutorial` / `how-to` / `explanation` / `reference`)
 | `page-level` | — | Level
 | `page-difficulty` | `page-level` | Level
 | `page-prerequisites` | — | Prerequisites
@@ -72,18 +115,9 @@ Only set attributes render. Aliases resolve to the same label (canonical wins if
 | `page-tl-dr` | — | TL;DR
 | `page-reading-time` | — | Reading time
 | `page-estimated-time` | — | Estimated time
-| `page-duration` | `page-estimated-time` | Duration
-| `page-keywords` | — | Keywords
-| `page-tags` | — | Tags
-| `page-category` | — | Category
-| `page-categories` | `page-category` | Categories
-| `page-topic` | — | Topic
-| `page-subject` | `page-topic` | Subject
-| `page-series` | — | Series
-| `page-collection` | `page-series` | Collection
-| `page-part-of` | — | Part of
+| `page-duration` | `page-estimated-time` | Estimated time
 | `page-status` | — | Status (`draft` / `review` / `published` / `deprecated` / …)
-| `page-content-status` | `page-status` | Content status
+| `page-content-status` | `page-status` | Status
 | `page-maturity` | — | Maturity
 | `page-stability` | — | Stability
 | `page-lifecycle` | — | Lifecycle
@@ -92,8 +126,28 @@ Only set attributes render. Aliases resolve to the same label (canonical wins if
 | `page-replaced-by` | — | Replaced by
 | `page-supersedes` | — | Supersedes
 | `page-expires` | — | Expires
-| `page-valid-until` | `page-expires` | Valid until
-| `page-orig-author` | — | Original author (set once)
+| `page-valid-until` | `page-expires` | Expires
+|===
+
+=== Footer (classification, authorship, dates, colophon)
+
+[cols="2,2,3"]
+|===
+| Attribute | Alias of | Label
+
+| `page-doc-type` | — | Document type
+| `page-type` | `page-doc-type` | Document type
+| `page-diataxis` | — | Diátaxis
+| `page-keywords` | — | Keywords (linked)
+| `page-tags` | — | Tags (linked)
+| `page-category` | — | Category
+| `page-categories` | `page-category` | Category
+| `page-topic` | — | Topic
+| `page-subject` | `page-topic` | Topic
+| `page-series` | — | Series
+| `page-collection` | `page-series` | Series
+| `page-part-of` | — | Part of
+| `page-orig-author` | — | Original author
 | `page-creator` | `page-orig-author` | Original author
 | `page-author` | — | Author
 | `page-authors` | — | Authors
@@ -102,7 +156,7 @@ Only set attributes render. Aliases resolve to the same label (canonical wins if
 | `page-contributors` | — | Contributors
 | `page-editor` | — | Editor
 | `page-reviewer` | — | Reviewer
-| `page-reviewers` | `page-reviewer` | Reviewers
+| `page-reviewers` | `page-reviewer` | Reviewer
 | `page-translator` | — | Translator
 | `page-maintainer` | — | Maintainer
 | `page-owner` | — | Owner
@@ -111,22 +165,14 @@ Only set attributes render. Aliases resolve to the same label (canonical wins if
 | `page-published` | — | Published
 | `page-date-published` | `page-published` | Published
 | `page-date` | — | Date
-| `page-last-edited` | — | Last edited (folded into latest contributor when both set)
-| `page-last-modified` | `page-last-edited` | Last modified
+| `page-last-edited` | — | Last edited (byline on teaching pages)
+| `page-last-modified` | `page-last-edited` | Last edited
 | `page-revised` | — | Revised
-| `page-revdate` | `page-revised` | Revision date
+| `page-revdate` | `page-revised` | Revised
 | `page-revision` | — | Revision
 | `page-revnumber` | `page-revision` | Revision
 | `page-version` | — | Doc version
 | `page-edition` | — | Edition
-|===
-
-=== Footer (colophon: rights, locale, identifiers, relations)
-
-[cols="2,2,3"]
-|===
-| Attribute | Alias of | Label
-
 | `page-license` | — | License
 | `page-licence` | `page-license` | License
 | `page-spdx` | — | SPDX
@@ -134,13 +180,13 @@ Only set attributes render. Aliases resolve to the same label (canonical wins if
 | `page-rights` | — | Rights
 | `page-attribution` | — | Attribution
 | `page-funding` | — | Funding
-| `page-sponsor` | `page-funding` | Sponsor
+| `page-sponsor` | `page-funding` | Funding
 | `page-acknowledgements` | — | Acknowledgements
 | `page-contact` | — | Contact
 | `page-email` | — | Email
 | `page-orcid` | — | ORCID
 | `page-affiliation` | — | Affiliation
-| `page-organization` | `page-affiliation` | Organization
+| `page-organization` | `page-affiliation` | Affiliation
 | `page-lang` | — | Language
 | `page-language` | `page-lang` | Language
 | `page-locale` | — | Locale
@@ -153,11 +199,11 @@ Only set attributes render. Aliases resolve to the same label (canonical wins if
 | `page-isbn` | — | ISBN
 | `page-issn` | — | ISSN
 | `page-url` | — | URL
-| `page-canonical` | `page-url` | Canonical URL
+| `page-canonical` | `page-url` | URL
 | `page-source` | — | Source
 | `page-origin` | `page-source` | Source
 | `page-see-also` | — | See also
-| `page-related` | `page-see-also` | Related
+| `page-related` | `page-see-also` | See also
 | `page-parent` | — | Parent
 | `page-next` | — | Next
 | `page-prev` | — | Previous
@@ -166,17 +212,19 @@ Only set attributes render. Aliases resolve to the same label (canonical wins if
 | `page-schema-version` | — | Set automatically
 |===
 
+GitHub login overrides:: `page-orig-author-github`, `page-last-author-github`, `page-author-github`, or site map `page-context-authors` (`Name=login;…` or JSON object).
+
 Inspired by Dublin Core, Quarto/Pandoc front matter, AsciiDoc `author`/`revdate`/`revnumber`, Open Graph / citation_* meta, and common SSG keys (Hugo/Jekyll/MkDocs).
 
 == HTML meta
 
-When present, values are also emitted as `<meta>` tags (`author`, `keywords`, `dcterms.*`, `og:*`, `article:*`, `citation_*`, `robots`). Antora’s own `:description:` continues to feed the usual description meta via Antora — use `page-abstract` when you want this extension to emit description as well.
+When present, values are also emitted as `<meta>` tags (`author`, `keywords`, `dcterms.*`, `og:*`, `article:*`, `citation_*`, `robots`). Antora’s own `:description:` continues to feed the usual description meta via Antora — use `page-abstract` when you want this extension to emit description as well. Agent credits are plain-human in meta (`Ryan Johnson`, not the via form).
 
 == Behavior
 
-* Lead aside prepended when any lead field is set (orientation + provenance **before** body / in-doc TOC).
-* Footer aside appended when colophon fields are set (license, DOI, …), **or** when authorship is remapped to the footer on a component home surface.
-* Markup: `<aside class="page-context …"><table class="page-context-table">…</table></aside>` — aside is the panel; compact key/value rows inside (keys left-aligned).
+* Teaching byline + lead aside when orientation fields or a byline date exist.
+* Footer aside for authorship / classification / colophon (and on component homes for authorship).
+* Markup: `<aside class="page-context …">` with optional byline + `<table class="page-context-table">`.
 * Idempotent if a block with role `page-context-lead` / `page-context-footer` already exists.
 * Injects baseline CSS + meta via DocInfo `head` (themes may refine with `.page-context` tokens).
 * **Does not** format Asciidoctor/Antora `:toc:` / in-doc TOC — that stays a separate block; style it in the UI theme (e.g. Valentus).
@@ -198,9 +246,10 @@ Section landings (`tutorials/index.adoc`, etc.) keep normal lead chrome.
 Refine shared look in the extension’s baseline CSS (and theme tokens that target `.page-context`), not by forking the same chrome with one-off per-hub supplemental CSS.
 Hubs may still set brand tokens; avoid duplicating table/aside layout rules in every docs playbook.
 
-Keys use `text-align: left` (UA `th` defaults to center). Footer aside has extra top/bottom margin so end-zone metadata is not stuck to the last body block.
+Keys use `text-align: left` (UA `th` defaults to center). Keyword links inherit muted text color with underline only. Footer aside has extra top/bottom margin so end-zone metadata is not stuck to the last body block.
 
 == Related
 
 * Registry card: link:antora-registry.md[]
+* https://github.com/antora-supplemental/page-edit[page-edit] (View \| Edit source row)
 * Dev-Centr policy: `general/documentation.md` in https://github.com/dev-centr/agent-rules[dev-centr/agent-rules]

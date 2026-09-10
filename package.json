@@ -1,16 +1,18 @@
 {
   "name": "@antora-supplemental/page-context",
-  "version": "0.5.0",
-  "description": "Asciidoctor/Antora extension: render Audience, Usage context, and author credits from page-* attributes",
+  "version": "0.6.0",
+  "description": "Asciidoctor/Antora extension: slim byline + page-* metadata, keyword index pages, HTML meta",
   "main": "lib/index.js",
   "exports": {
-    ".": "./lib/index.js"
+    ".": "./lib/index.js",
+    "./antora": "./lib/antora.js"
   },
   "files": [
     "lib/**/*",
     "README.adoc",
     "CHANGELOG.adoc",
-    "LICENSE"
+    "LICENSE",
+    "antora-registry.md"
   ],
   "scripts": {
     "test": "node --test test/*.test.js"
@@ -25,7 +27,8 @@
     "page-attributes",
     "audience",
     "author",
-    "metadata"
+    "metadata",
+    "keywords"
   ],
   "homepage": "https://github.com/antora-supplemental/page-context",
   "bugs": {
@@ -37,6 +40,14 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "peerDependencies": {
+    "@antora/site-generator": ">=3.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@antora/site-generator": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@asciidoctor/core": "^3.0.4"

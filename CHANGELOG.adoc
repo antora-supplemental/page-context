@@ -1,5 +1,14 @@
 = Changelog
 
+== 0.6.0 — 2026-09-10
+
+* **Slim teaching lead:** byline `Last updated {date} by {avatar}{name}`; orientation/status stay in the lead table; authorship and classification move to the **footer**.
+* Agent-assisted credits display as `{human} (via {product})` (parses legacy `{product} on behalf of {human}`).
+* GitHub avatars via `https://github.com/{login}.png` (no OAuth); map via `page-*-github` or `page-context-authors`.
+* **Keywords / Tags** render as muted underline links to filtered listing pages (`{base}/{slug}/`, default `/home/keywords/{slug}/`).
+* Antora helper `@antora-supplemental/page-context/antora` generates keyword index pages (articles grouped by component).
+* Schema version attribute `0.6.0`.
+
 == 0.5.0 — 2026-09-10
 
 * **Component home surface:** never render Audience / Usage context (attrs may still exist; HTML meta still emits).
