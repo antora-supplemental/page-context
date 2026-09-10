@@ -1,5 +1,9 @@
 = Changelog
 
+== 0.3.1 — 2026-09-09
+
+* README: soft guidance — style `page-*` presentation in this package (point of interpretation), not via per-hub supplemental CSS forks.
+
 == 0.3.0 — 2026-09-09
 
 * Lead/footer markup is a compact key/value `<table class="page-context-table">` (not a heavy definition list).

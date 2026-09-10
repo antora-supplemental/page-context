@@ -181,6 +181,12 @@ When present, values are also emitted as `<meta>` tags (`author`, `keywords`, `d
 * Injects baseline CSS + meta via DocInfo `head` (themes may refine with `.page-context` tokens).
 * **Does not** format Asciidoctor/Antora `:toc:` / in-doc TOC — that stays a separate block; style it in the UI theme (e.g. Valentus).
 
+== Styling (prefer here, not per-hub)
+
+**Soft default:** treat this package as the **point of interpretation** for `page-*` presentation.
+Refine shared look in the extension’s baseline CSS (and theme tokens that target `.page-context`), not by forking the same chrome with one-off per-hub supplemental CSS.
+Hubs may still set brand tokens; avoid duplicating table/aside layout rules in every docs playbook.
+
 == Related
 
 * Registry card: link:antora-registry.md[]
