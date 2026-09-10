@@ -13,13 +13,13 @@
 
 Renders **Dublin Core–style**, Quarto/SSG, AsciiDoc revision, and Diátaxis-oriented metadata from `page-*` attributes into a slim teaching byline + lead table (orientation), a footer aside (authorship / classification / colophon), and HTML `<meta>` tags.
 
-Schema version:: `0.6.3`
+Schema version:: `0.6.4`
 
 == Install
 
 [source,bash]
 ----
-pnpm add -D github:antora-supplemental/page-context#v0.6.3
+pnpm add -D github:antora-supplemental/page-context#v0.6.4
 # after npm publish: pnpm add -D @antora-supplemental/page-context
 ----
 
@@ -60,7 +60,7 @@ Displayed as:: `{human} [avatar] via {product}` — e.g. `Ryan Johnson` + circul
 
 Do **not** also paste hand-written `Audience role::` / author labeled lists when this extension is active.
 
-== Layout (0.6.3)
+== Layout (0.6.4)
 
 [cols="1,3"]
 |===
@@ -79,7 +79,7 @@ Do **not** also paste hand-written `Audience role::` / author labeled lists when
 | Single panel aside: authorship, classification (Document type, Diátaxis, **Keywords**, Tags, …), dates not shown in the byline, rights / identifiers / locale. Author cells use the same name → avatar → `via` chrome.
 
 | **Component home**
-| No byline / no Audience role / Usage chrome; authorship + dates in the footer only.
+| No byline / no Audience role / Usage chrome; authorship + dates in the footer only. Still emits an **empty lead shell** (header zone) so page-edit can attach Source.
 |===
 
 `@antora-supplemental/page-edit` may add a **Source** row (`View | Edit`) to the lead table. The VCS provider mark sits on the **Source** key; the value cell is text-only links.
@@ -225,7 +225,7 @@ When present, values are also emitted as `<meta>` tags (`author`, `keywords`, `d
 
 == Behavior
 
-* Teaching byline + lead aside when orientation fields or a byline date exist.
+* Teaching byline + lead aside when orientation fields or a byline date exist (component homes still get an empty lead shell).
 * Footer aside for authorship / classification / colophon (and on component homes for authorship).
 * Markup: `<aside class="page-context …">` with optional byline + `<table class="page-context-table">`.
 * Idempotent if a block with role `page-context-lead` / `page-context-footer` already exists.
@@ -234,7 +234,7 @@ When present, values are also emitted as `<meta>` tags (`author`, `keywords`, `d
 
 === Component home surface
 
-Org **component start pages** (and hub portal homes) must not show Audience role / Usage context chrome — even when those `page-*` attrs are set (agents / HTML meta still use them). Authorship and dates render in the **footer** only.
+Org **component start pages** (and hub portal homes) must not show Audience role / Usage context chrome — even when those `page-*` attrs are set (agents / HTML meta still use them). Authorship and dates render in the **footer** only. An empty **lead shell** (panel + table) remains so `@antora-supplemental/page-edit` can place View|Edit in the header zone.
 
 Detect when either:
 

@@ -1,5 +1,11 @@
 = Changelog
 
+== 0.6.4 — 2026-09-10
+
+* **Component home lead shell:** still emit an empty `.page-context-lead` + `.page-context-panel` table (header zone) when audience/usage chrome is suppressed, so `@antora-supplemental/page-edit` can attach the Source row instead of floating View|Edit.
+* Authorship / dates remain footer-only on that surface; byline stays omitted.
+* Schema version attribute `0.6.4`.
+
 == 0.6.3 — 2026-09-10
 
 * **Author chrome:** `{linked name} {circular avatar} via {product}` — name link first, avatar after, agent product plain (no parentheses, not linked).
