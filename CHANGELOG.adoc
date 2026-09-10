@@ -1,5 +1,14 @@
 = Changelog
 
+== 0.6.3 — 2026-09-10
+
+* **Author chrome:** `{linked name} {circular avatar} via {product}` — name link first, avatar after, agent product plain (no parentheses, not linked).
+* Circular clip: fixed square `.page-context-avatar-wrap` with `border-radius: 50%`, `overflow: hidden`, and `object-fit: cover` on the image.
+* Vertical centering: `align-items: center` on `.page-context-author` / byline flex.
+* Same credit shape in footer author cells; HTML meta still uses the plain human name.
+* Legacy `{product} on behalf of {human}` and `{human} (via {product})` still parse.
+* Schema version attribute `0.6.3`.
+
 == 0.6.2 — 2026-09-10
 
 * Lead-table label for `page-audience` is **Audience role** (not bare Audience) — role = permissions / access / usage expectations.

@@ -13,13 +13,13 @@
 
 Renders **Dublin Core–style**, Quarto/SSG, AsciiDoc revision, and Diátaxis-oriented metadata from `page-*` attributes into a slim teaching byline + lead table (orientation), a footer aside (authorship / classification / colophon), and HTML `<meta>` tags.
 
-Schema version:: `0.6.0`
+Schema version:: `0.6.3`
 
 == Install
 
 [source,bash]
 ----
-pnpm add -D github:antora-supplemental/page-context#v0.6.0
+pnpm add -D github:antora-supplemental/page-context#v0.6.3
 # after npm publish: pnpm add -D @antora-supplemental/page-context
 ----
 
@@ -56,11 +56,11 @@ asciidoc:
 
 Agent-assisted credit (source attr):: `{product} on behalf of {human}`
 +
-Displayed as:: `{human} (via {product})` — e.g. `Ryan Johnson (via Cursor)`
+Displayed as:: `{human} [avatar] via {product}` — e.g. `Ryan Johnson` + circular pic + `via Cursor` (no parentheses; agent name is not linked)
 
 Do **not** also paste hand-written `Audience role::` / author labeled lists when this extension is active.
 
-== Layout (0.6.2)
+== Layout (0.6.3)
 
 [cols="1,3"]
 |===
@@ -70,13 +70,13 @@ Do **not** also paste hand-written `Audience role::` / author labeled lists when
 | Seamless document chrome (no border/background). Holds the byline and the inner panel.
 
 | **Byline** (`.page-context-byline`)
-| `Last updated {date} by {avatar} {name}` — child of the lead aside, **sibling** of the panel (not inside the table).
+| `Last updated {date} by {linked name} {circular avatar} via {agent}` — child of the lead aside, **sibling** of the panel (not inside the table). Avatar is after the name; agent product is plain text.
 
 | **Lead panel** (`.page-context-panel`)
 | Subtle border + wash + padding wrapping **only** the key/value table (Audience role, Usage, Status, Source, …).
 
 | **Footer** (`.page-context-footer`)
-| Single panel aside: authorship, classification (Document type, Diátaxis, **Keywords**, Tags, …), dates not shown in the byline, rights / identifiers / locale.
+| Single panel aside: authorship, classification (Document type, Diátaxis, **Keywords**, Tags, …), dates not shown in the byline, rights / identifiers / locale. Author cells use the same name → avatar → `via` chrome.
 
 | **Component home**
 | No byline / no Audience role / Usage chrome; authorship + dates in the footer only.

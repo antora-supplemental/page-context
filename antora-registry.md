@@ -13,7 +13,7 @@ This Asciidoctor extension (register under Antora `asciidoc.extensions`) reads a
 - A **footer** aside (license, identifiers, locale, see-also — colophon only)
 - Matching **HTML `<meta>`** tags (`dcterms.*`, `og:*`, `article:*`, `citation_*`, …)
 
-Agent-assisted authorship uses `{product} on behalf of {human}`.
+Agent-assisted authorship uses `{product} on behalf of {human}` (display: `{human} [avatar] via {product}`).
 
 ## Install
 

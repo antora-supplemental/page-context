@@ -52,12 +52,16 @@ Body paragraph.
     assert.doesNotMatch(lead, /Original author/)
     assert.doesNotMatch(lead, /Document type/)
     assert.match(footer, /Original author/)
-    assert.match(lead, /Ryan Johnson \(via Cursor\)/)
+    assert.match(lead, /Ryan Johnson/)
+    assert.match(lead, /page-context-author-name[\s\S]*page-context-avatar-wrap[\s\S]*page-context-via/)
+    assert.match(lead, /<span class="page-context-via">via Cursor<\/span>/)
+    assert.doesNotMatch(lead, /\(via Cursor\)/)
     assert.match(footer, /Document type/)
     assert.match(footer, /Diátaxis/)
     assert.match(footer, /Keywords/)
     assert.match(html, /github\.com\/AMDphreak/)
     assert.match(html, /page-context-avatar/)
+    assert.match(html, /page-context-avatar-wrap/)
     assert.match(html, /Body paragraph/)
   })
 
@@ -97,7 +101,7 @@ Hi.
     assert.match(html, /name="keywords" content="antora, metadata"/)
     assert.match(html, /name="dcterms.audience" content="Maintainers"/)
     assert.match(html, /name="citation_doi" content="10.example\/demo"/)
-    assert.match(html, /name="page-context-schema" content="0\.6\.2"/)
+    assert.match(html, /name="page-context-schema" content="0\.6\.3"/)
   })
 
   it('honors aliases (page-type → Document type) in footer', () => {
@@ -118,12 +122,38 @@ Hi.
     assert.match(html, /aside class="page-context page-context-footer"/)
   })
 
-  it('parses legacy on-behalf-of into Name (via Agent)', () => {
+  it('parses legacy on-behalf-of into Name via Agent', () => {
     const parsed = _internal.parseCredit('Cursor agent on behalf of Ryan Johnson')
     assert.equal(parsed.human, 'Ryan Johnson')
     assert.equal(parsed.agent, 'Cursor')
-    assert.equal(parsed.display, 'Ryan Johnson (via Cursor)')
+    assert.equal(parsed.display, 'Ryan Johnson via Cursor')
     assert.equal(parsed.meta, 'Ryan Johnson')
+  })
+
+  it('formats author as linked name, circular avatar, then unlinked via', () => {
+    const A = Asciidoctor()
+    const doc = A.load(`= Demo
+:page-last-author: Cursor agent on behalf of Ryan Johnson
+`, { safe: 'safe' })
+    const html = _internal.formatAuthorHtml(doc, 'Cursor agent on behalf of Ryan Johnson', 'last')
+    assert.match(html, /^<span class="page-context-author">/)
+    assert.match(
+      html,
+      /<a class="page-context-author-name" href="https:\/\/github\.com\/AMDphreak"[^>]*>Ryan Johnson<\/a>/
+    )
+    assert.match(html, /page-context-avatar-wrap[\s\S]*page-context-avatar/)
+    assert.match(html, /<span class="page-context-via">via Cursor<\/span>/)
+    assert.doesNotMatch(html, /href="[^"]*">[\s\S]*via Cursor/)
+    assert.doesNotMatch(html, /\(via/)
+    // Name before avatar before via
+    const nameIdx = html.indexOf('page-context-author-name')
+    const avatarIdx = html.indexOf('page-context-avatar-wrap')
+    const viaIdx = html.indexOf('page-context-via')
+    assert.ok(nameIdx < avatarIdx && avatarIdx < viaIdx)
+  })
+
+  it('meta credit stays plain human name without via', () => {
+    assert.equal(_internal.metaPlainCredit('Cursor agent on behalf of Ryan Johnson'), 'Ryan Johnson')
   })
 
   it('escapes HTML in attribute values', () => {
@@ -159,7 +189,7 @@ Hi.
     assert.equal(byAttr['page-last-edited'], 'footer')
     assert.equal(byAttr['page-license'], 'footer')
     assert.equal(byAttr['page-doi'], 'footer')
-    assert.equal(_internal.SCHEMA_VERSION, '0.6.2')
+    assert.equal(_internal.SCHEMA_VERSION, '0.6.3')
   })
 
   it('ships independent table CSS without zebra and with byline/avatar', () => {
@@ -168,6 +198,11 @@ Hi.
     assert.match(css, /\.page-context-byline/)
     assert.match(css, /\.page-context-panel/)
     assert.match(css, /\.page-context-avatar/)
+    assert.match(css, /\.page-context-avatar-wrap/)
+    assert.match(css, /\.page-context-author[\s\S]*align-items:\s*center/)
+    assert.match(css, /\.page-context-avatar-wrap[\s\S]*border-radius:\s*50%/)
+    assert.match(css, /\.page-context-avatar-wrap[\s\S]*overflow:\s*hidden/)
+    assert.match(css, /\.page-context-avatar[\s\S]*object-fit:\s*cover/)
     assert.match(css, /--page-context-divider/)
     assert.match(css, /--page-context-bg/)
     assert.match(css, /nth-child\(even\)/)
@@ -209,7 +244,9 @@ Welcome body.
     assert.doesNotMatch(html, /Usage context/)
     assert.match(html, /aside class="page-context page-context-footer"/)
     assert.match(html, /Original author/)
-    assert.match(html, /Ryan Johnson \(via Cursor\)/)
+    assert.match(html, /Ryan Johnson/)
+    assert.match(html, /<span class="page-context-via">via Cursor<\/span>/)
+    assert.doesNotMatch(html, /\(via Cursor\)/)
     assert.match(html, /Welcome body/)
     assert.match(html, /name="dcterms.audience" content="Readers starting here"/)
   })
