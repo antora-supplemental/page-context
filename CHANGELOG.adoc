@@ -1,5 +1,11 @@
 = Changelog
 
+== 0.3.0 — 2026-09-09
+
+* Lead/footer markup is a compact key/value `<table class="page-context-table">` (not a heavy definition list).
+* Default CSS: smaller muted type, thin ultra-light borders, transparent/light wash; dark-theme tokens via `html.dark-theme`.
+* Does **not** own or wrap Asciidoctor/Antora in-doc TOC — TOC stays a separate block for the theme to style.
+
 == 0.2.0 — 2026-08-25
 
 * Expand `page-*` schema with common tokens from Dublin Core, Quarto/SSG front matter, AsciiDoc revision fields, Open Graph / citation meta, and Diátaxis/doc lifecycle.

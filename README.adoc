@@ -174,10 +174,12 @@ When present, values are also emitted as `<meta>` tags (`author`, `keywords`, `d
 
 == Behavior
 
-* Lead aside prepended when any lead field is set.
+* Lead aside prepended when any lead field is set (document provenance **before** body / in-doc TOC).
 * Footer aside appended when any footer field is set.
+* Markup: `<aside class="page-context …"><table class="page-context-table">…</table></aside>` — compact key/value rows, not bold definition-list chrome.
 * Idempotent if a block with role `page-context-lead` / `page-context-footer` already exists.
-* Injects CSS + meta via DocInfo `head`.
+* Injects baseline CSS + meta via DocInfo `head` (themes may refine with `.page-context` tokens).
+* **Does not** format Asciidoctor/Antora `:toc:` / in-doc TOC — that stays a separate block; style it in the UI theme (e.g. Valentus).
 
 == Related
 

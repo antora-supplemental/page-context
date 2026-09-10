@@ -29,9 +29,10 @@ describe('page-context', () => {
 Body paragraph.
 `)
     assert.match(html, /aside class="page-context page-context-lead"/)
-    assert.match(html, /Audience/)
+    assert.match(html, /page-context-table/)
+    assert.match(html, /<th scope="row">Audience<\/th>/)
     assert.match(html, /New org members/)
-    assert.match(html, /Usage context/)
+    assert.match(html, /<th scope="row">Usage context<\/th>/)
     assert.match(html, /Docs hub teaching page/)
     assert.match(html, /aside class="page-context page-context-footer"/)
     assert.match(html, /Original author/)
