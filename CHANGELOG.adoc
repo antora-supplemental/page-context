@@ -1,5 +1,12 @@
 = Changelog
 
+== 0.6.1 — 2026-09-10
+
+* **Lead nesting:** outer `.page-context-lead` is seamless (no border/wash); byline stays a child of that zone; inner `.page-context-panel` wraps only the key/value table.
+* Soften panel wash/border; byline has no panel chrome (reads as normal doc chrome above the table panel).
+* Tests assert byline is **not** inside `<table>` and lead table is wrapped by `.page-context-panel`.
+* Schema version attribute `0.6.1`.
+
 == 0.6.0 — 2026-09-10
 
 * **Slim teaching lead:** byline `Last updated {date} by {avatar}{name}`; orientation/status stay in the lead table; authorship and classification move to the **footer**.

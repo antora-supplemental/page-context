@@ -36,12 +36,19 @@ Body paragraph.
     assert.match(html, /Last updated/)
     assert.match(html, /2026-08-25/)
     assert.match(html, /page-context-table/)
+    assert.match(html, /page-context-panel/)
     assert.match(html, /<th scope="row">Audience<\/th>/)
     assert.match(html, /New org members/)
     assert.match(html, /<th scope="row">Usage context<\/th>/)
     assert.match(html, /Docs hub teaching page/)
     const lead = html.match(/aside class="page-context page-context-lead"[\s\S]*?<\/aside>/)[0]
     const footer = html.match(/aside class="page-context page-context-footer"[\s\S]*?<\/aside>/)[0]
+    assert.match(lead, /<p class="page-context-byline">[\s\S]*?<\/p>\s*<div class="page-context-panel">/)
+    assert.doesNotMatch(lead, /<table[\s\S]*page-context-byline/)
+    assert.doesNotMatch(lead, /<table[\s\S]*Last updated/)
+    const table = lead.match(/<table class="page-context-table"[\s\S]*?<\/table>/)[0]
+    assert.doesNotMatch(table, /Last updated/)
+    assert.doesNotMatch(table, /page-context-byline/)
     assert.doesNotMatch(lead, /Original author/)
     assert.doesNotMatch(lead, /Document type/)
     assert.match(footer, /Original author/)
@@ -90,7 +97,7 @@ Hi.
     assert.match(html, /name="keywords" content="antora, metadata"/)
     assert.match(html, /name="dcterms.audience" content="Maintainers"/)
     assert.match(html, /name="citation_doi" content="10.example\/demo"/)
-    assert.match(html, /name="page-context-schema" content="0\.6\.0"/)
+    assert.match(html, /name="page-context-schema" content="0\.6\.1"/)
   })
 
   it('honors aliases (page-type → Document type) in footer', () => {
@@ -152,13 +159,14 @@ Hi.
     assert.equal(byAttr['page-last-edited'], 'footer')
     assert.equal(byAttr['page-license'], 'footer')
     assert.equal(byAttr['page-doi'], 'footer')
-    assert.equal(_internal.SCHEMA_VERSION, '0.6.0')
+    assert.equal(_internal.SCHEMA_VERSION, '0.6.1')
   })
 
   it('ships independent table CSS without zebra and with byline/avatar', () => {
     const css = _internal.CSS
     assert.match(css, /\.page-context-table/)
     assert.match(css, /\.page-context-byline/)
+    assert.match(css, /\.page-context-panel/)
     assert.match(css, /\.page-context-avatar/)
     assert.match(css, /--page-context-divider/)
     assert.match(css, /--page-context-bg/)
@@ -168,6 +176,20 @@ Hi.
     assert.match(css, /text-align:\s*left\s*!important/)
     assert.match(css, /\.page-context-footer[\s\S]*margin-top:\s*2\.25rem/)
     assert.match(css, /padding:\s*0\.35rem\s*0\.9rem/)
+    assert.match(css, /\.page-context-lead[\s\S]*border:\s*none/)
+    assert.match(css, /\.page-context-panel[\s\S]*border:\s*1px solid/)
+  })
+
+  it('buildAsideHtml keeps byline outside the table and panel', () => {
+    const html = _internal.buildAsideHtml(
+      'page-context-lead',
+      [{ label: 'Audience', value: 'Readers', html: false }],
+      { bylineHtml: '<p class="page-context-byline">Last updated <time>2026-09-10</time></p>' }
+    )
+    assert.match(html, /^<aside class="page-context page-context-lead"/)
+    assert.match(html, /page-context-byline[\s\S]*page-context-panel[\s\S]*page-context-table/)
+    assert.doesNotMatch(html, /<table[\s\S]*Last updated/)
+    assert.doesNotMatch(html, /<table[\s\S]*page-context-byline/)
   })
 
   it('component home: hides audience/usage; authorship in footer (opt-in surface)', () => {

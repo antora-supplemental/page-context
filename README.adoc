@@ -60,26 +60,29 @@ Displayed as:: `{human} (via {product})` — e.g. `Ryan Johnson (via Cursor)`
 
 Do **not** also paste hand-written `Audience::` / author labeled lists when this extension is active.
 
-== Layout (0.6)
+== Layout (0.6.1)
 
 [cols="1,3"]
 |===
 | Zone | Contents
 
-| **Byline** (teaching pages)
-| `Last updated {date} by {avatar} {name}` — above the lead table when a date is known.
+| **Lead outer** (`.page-context-lead`)
+| Seamless document chrome (no border/background). Holds the byline and the inner panel.
 
-| **Lead table**
-| Orientation / status only: Audience, Usage context, Level, Prerequisites, Status, …
+| **Byline** (`.page-context-byline`)
+| `Last updated {date} by {avatar} {name}` — child of the lead aside, **sibling** of the panel (not inside the table).
 
-| **Footer table**
-| Authorship, classification (Document type, Diátaxis, **Keywords**, Tags, …), dates not shown in the byline, rights / identifiers / locale.
+| **Lead panel** (`.page-context-panel`)
+| Subtle border + wash + padding wrapping **only** the key/value table (Audience, Usage, Status, Source, …).
+
+| **Footer** (`.page-context-footer`)
+| Single panel aside: authorship, classification (Document type, Diátaxis, **Keywords**, Tags, …), dates not shown in the byline, rights / identifiers / locale.
 
 | **Component home**
 | No byline / no Audience / Usage chrome; authorship + dates in the footer only.
 |===
 
-`@antora-supplemental/page-edit` may add a **Source** row (`View | Edit`) to the lead table.
+`@antora-supplemental/page-edit` may add a **Source** row (`View | Edit`) to the lead table. The VCS provider mark sits on the **Source** key; the value cell is text-only links.
 
 == Keyword links
 
