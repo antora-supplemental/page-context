@@ -176,7 +176,7 @@ When present, values are also emitted as `<meta>` tags (`author`, `keywords`, `d
 
 * Lead aside prepended when any lead field is set (document provenance **before** body / in-doc TOC).
 * Footer aside appended when any footer field is set.
-* Markup: `<aside class="page-context …"><table class="page-context-table">…</table></aside>` — compact key/value rows, not bold definition-list chrome.
+* Markup: `<aside class="page-context …"><table class="page-context-table">…</table></aside>` — aside is the panel; compact key/value rows inside (keys left-aligned).
 * Idempotent if a block with role `page-context-lead` / `page-context-footer` already exists.
 * Injects baseline CSS + meta via DocInfo `head` (themes may refine with `.page-context` tokens).
 * **Does not** format Asciidoctor/Antora `:toc:` / in-doc TOC — that stays a separate block; style it in the UI theme (e.g. Valentus).
@@ -186,6 +186,8 @@ When present, values are also emitted as `<meta>` tags (`author`, `keywords`, `d
 **Soft default:** treat this package as the **point of interpretation** for `page-*` presentation.
 Refine shared look in the extension’s baseline CSS (and theme tokens that target `.page-context`), not by forking the same chrome with one-off per-hub supplemental CSS.
 Hubs may still set brand tokens; avoid duplicating table/aside layout rules in every docs playbook.
+
+Keys use `text-align: left` (UA `th` defaults to center). Footer aside has extra top/bottom margin so end-zone metadata is not stuck to the last body block.
 
 == Related
 

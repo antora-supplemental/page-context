@@ -1,5 +1,11 @@
 = Changelog
 
+== 0.3.3 — 2026-09-09
+
+* Keys left-aligned (`th` defaults to center in UA CSS) with `text-align: left !important`.
+* More horizontal cell padding; footer aside gets larger top/bottom margin.
+* Aside is the panel (border + wash + padding); table is borderless rows with thin dividers only.
+
 == 0.3.2 — 2026-09-09
 
 * Metadata table styling is fully independent of theme/doc table rules: no zebra/alternating row fills; thin outer border + thin inner cell dividers; muted type at in-doc TOC scale (`0.82em`); subtle surface wash in light and dark.

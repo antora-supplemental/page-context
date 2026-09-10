@@ -126,5 +126,8 @@ Hi.
     assert.match(css, /nth-child\(even\)/)
     assert.match(css, /background:\s*transparent\s*!important/)
     assert.match(css, /font-size:\s*0\.82em/)
+    assert.match(css, /text-align:\s*left\s*!important/)
+    assert.match(css, /\.page-context-footer[\s\S]*margin-top:\s*2\.25rem/)
+    assert.match(css, /padding:\s*0\.35rem\s*0\.9rem/)
   })
 })

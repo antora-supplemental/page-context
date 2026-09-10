@@ -1,6 +1,6 @@
 {
   "name": "@antora-supplemental/page-context",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Asciidoctor/Antora extension: render Audience, Usage context, and author credits from page-* attributes",
   "main": "lib/index.js",
   "exports": {
