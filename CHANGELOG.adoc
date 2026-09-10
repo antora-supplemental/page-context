@@ -1,5 +1,12 @@
 = Changelog
 
+== 0.5.0 — 2026-09-10
+
+* **Component home surface:** never render Audience / Usage context (attrs may still exist; HTML meta still emits).
+* On that surface, authorship / dates / revision move to the **footer** (end of document).
+* Detect via `:page-context-surface: component-home` (or `home`), or Antora `page-module=ROOT` + `page-relative-src-path=index.adoc`.
+* Schema version attribute `0.5.0`.
+
 == 0.4.0 — 2026-09-09
 
 * Lead holds orientation **and** provenance: authorship, dates, doc version (house subset is one top panel).

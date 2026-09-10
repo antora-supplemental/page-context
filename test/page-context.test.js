@@ -141,4 +141,62 @@ Hi.
     assert.match(css, /\.page-context-footer[\s\S]*margin-top:\s*2\.25rem/)
     assert.match(css, /padding:\s*0\.35rem\s*0\.9rem/)
   })
+
+  it('component home: hides audience/usage; authorship in footer (opt-in surface)', () => {
+    const html = convert(`= Component home
+:page-context-surface: component-home
+:page-audience: Readers starting here
+:page-usage-context: Component start page
+:page-orig-author: Ryan Johnson
+:page-last-author: Cursor agent on behalf of Ryan Johnson
+:page-last-edited: 2026-09-10
+
+Welcome body.
+`)
+    assert.doesNotMatch(html, /aside class="page-context page-context-lead"/)
+    assert.doesNotMatch(html, /<th scope="row">Audience<\/th>/)
+    assert.doesNotMatch(html, /Usage context/)
+    assert.match(html, /aside class="page-context page-context-footer"/)
+    assert.match(html, /Original author/)
+    assert.match(html, /Ryan Johnson/)
+    assert.match(html, /Cursor agent on behalf of Ryan Johnson \(2026-09-10\)/)
+    assert.match(html, /Welcome body/)
+    // HTML meta still carries audience for machines
+    assert.match(html, /name="dcterms.audience" content="Readers starting here"/)
+  })
+
+  it('component home: auto-detect Antora ROOT index.adoc', () => {
+    const html = convert(`= Portal
+:page-module: ROOT
+:page-relative-src-path: index.adoc
+:page-audience: Hub visitors
+:page-usage-context: Docs hub home
+:page-orig-author: Ada
+:page-last-author: Bea
+
+Hi.
+`)
+    assert.doesNotMatch(html, /<th scope="row">Audience<\/th>/)
+    assert.doesNotMatch(html, /Usage context/)
+    assert.doesNotMatch(html, /aside class="page-context page-context-lead"/)
+    assert.match(html, /aside class="page-context page-context-footer"/)
+    assert.match(html, /Original author/)
+    assert.match(html, /Ada/)
+  })
+
+  it('component home: section landing (non-ROOT index) keeps lead chrome', () => {
+    const html = convert(`= Tutorials
+:page-module: tutorials
+:page-relative-src-path: index.adoc
+:page-audience: New learners
+:page-usage-context: Section landing
+:page-orig-author: Ada
+:page-last-author: Ada
+
+Hi.
+`)
+    assert.match(html, /page-context-lead/)
+    assert.match(html, /Audience/)
+    assert.match(html, /Usage context/)
+  })
 })

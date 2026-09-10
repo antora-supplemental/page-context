@@ -175,11 +175,22 @@ When present, values are also emitted as `<meta>` tags (`author`, `keywords`, `d
 == Behavior
 
 * Lead aside prepended when any lead field is set (orientation + provenance **before** body / in-doc TOC).
-* Footer aside appended only when colophon fields are set (license, DOI, …).
+* Footer aside appended when colophon fields are set (license, DOI, …), **or** when authorship is remapped to the footer on a component home surface.
 * Markup: `<aside class="page-context …"><table class="page-context-table">…</table></aside>` — aside is the panel; compact key/value rows inside (keys left-aligned).
 * Idempotent if a block with role `page-context-lead` / `page-context-footer` already exists.
 * Injects baseline CSS + meta via DocInfo `head` (themes may refine with `.page-context` tokens).
 * **Does not** format Asciidoctor/Antora `:toc:` / in-doc TOC — that stays a separate block; style it in the UI theme (e.g. Valentus).
+
+=== Component home surface
+
+Org **component start pages** (and hub portal homes) must not show Audience / Usage context chrome — even when those `page-*` attrs are set (agents / HTML meta still use them). Authorship and dates render in the **footer** only.
+
+Detect when either:
+
+* `:page-context-surface: component-home` (alias `home`) is set, or
+* Antora attrs say this is the default start page: `page-module=ROOT` and `page-relative-src-path=index.adoc`
+
+Section landings (`tutorials/index.adoc`, etc.) keep normal lead chrome.
 
 == Styling (prefer here, not per-hub)
 
