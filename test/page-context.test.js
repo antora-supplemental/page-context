@@ -18,7 +18,7 @@ function convert (src) {
 }
 
 describe('page-context', () => {
-  it('renders audience lead and author footer from page-* attrs', () => {
+  it('renders orientation + authorship in lead (no footer for house subset)', () => {
     const html = convert(`= Demo
 :page-audience: New org members
 :page-usage-context: Docs hub teaching page
@@ -34,25 +34,26 @@ Body paragraph.
     assert.match(html, /New org members/)
     assert.match(html, /<th scope="row">Usage context<\/th>/)
     assert.match(html, /Docs hub teaching page/)
-    assert.match(html, /aside class="page-context page-context-footer"/)
     assert.match(html, /Original author/)
     assert.match(html, /Ryan Johnson/)
     assert.match(html, /Cursor agent on behalf of Ryan Johnson \(2026-08-25\)/)
+    assert.doesNotMatch(html, /aside class="page-context page-context-footer"/)
     assert.match(html, /Body paragraph/)
   })
 
-  it('skips lead when audience attrs absent', () => {
+  it('puts authorship in lead when orientation attrs absent', () => {
     const html = convert(`= Demo
 :page-orig-author: Ada
 :page-last-author: Ada
 
 Hi.
 `)
-    assert.doesNotMatch(html, /aside class="page-context page-context-lead"/)
-    assert.match(html, /aside class="page-context page-context-footer"/)
+    assert.match(html, /aside class="page-context page-context-lead"/)
+    assert.doesNotMatch(html, /aside class="page-context page-context-footer"/)
+    assert.match(html, /Original author/)
   })
 
-  it('renders extended metadata and HTML meta tags', () => {
+  it('keeps colophon fields in footer', () => {
     const html = convert(`= Demo
 :page-audience: Maintainers
 :page-status: draft
@@ -65,9 +66,12 @@ Hi.
 
 Hi.
 `)
+    assert.match(html, /aside class="page-context page-context-lead"/)
     assert.match(html, /Status/)
     assert.match(html, /draft/)
     assert.match(html, /Keywords/)
+    assert.match(html, /Original author/)
+    assert.match(html, /aside class="page-context page-context-footer"/)
     assert.match(html, /License/)
     assert.match(html, /DOI/)
     assert.match(html, /name="keywords" content="antora, metadata"/)
@@ -90,6 +94,7 @@ Hi.
     assert.match(html, /Ada/)
     assert.match(html, /Latest contributor/)
     assert.match(html, /Bea/)
+    assert.match(html, /aside class="page-context page-context-lead"/)
   })
 
   it('escapes HTML in attribute values', () => {
@@ -116,6 +121,12 @@ Hi.
     ]) {
       assert.ok(attrs.has(name), `missing ${name}`)
     }
+    const byAttr = Object.fromEntries(_internal.SCHEMA.map((f) => [f.attr, f.section]))
+    assert.equal(byAttr['page-orig-author'], 'lead')
+    assert.equal(byAttr['page-last-edited'], 'lead')
+    assert.equal(byAttr['page-version'], 'lead')
+    assert.equal(byAttr['page-license'], 'footer')
+    assert.equal(byAttr['page-doi'], 'footer')
   })
 
   it('ships independent table CSS without zebra and with cell dividers', () => {

@@ -11,7 +11,7 @@
 :page-last-edited: 2026-08-25
 :page-lang: en
 
-Renders **Dublin Core–style**, Quarto/SSG, AsciiDoc revision, and Diátaxis-oriented metadata from `page-*` attributes into a lead aside, footer aside, and HTML `<meta>` tags.
+Renders **Dublin Core–style**, Quarto/SSG, AsciiDoc revision, and Diátaxis-oriented metadata from `page-*` attributes into a lead aside (orientation + provenance), an optional footer aside (colophon), and HTML `<meta>` tags.
 
 == Install
 
@@ -51,7 +51,7 @@ Do **not** also paste hand-written `Audience::` / author labeled lists when this
 
 Only set attributes render. Aliases resolve to the same label (canonical wins if both are set).
 
-=== Lead (orientation + classification + status)
+=== Lead (orientation + classification + status + provenance)
 
 [cols="2,2,3"]
 |===
@@ -93,14 +93,6 @@ Only set attributes render. Aliases resolve to the same label (canonical wins if
 | `page-supersedes` | — | Supersedes
 | `page-expires` | — | Expires
 | `page-valid-until` | `page-expires` | Valid until
-|===
-
-=== Footer (people, dates, rights, locale, identifiers)
-
-[cols="2,2,3"]
-|===
-| Attribute | Alias of | Label
-
 | `page-orig-author` | — | Original author (set once)
 | `page-creator` | `page-orig-author` | Original author
 | `page-author` | — | Author
@@ -114,11 +106,6 @@ Only set attributes render. Aliases resolve to the same label (canonical wins if
 | `page-translator` | — | Translator
 | `page-maintainer` | — | Maintainer
 | `page-owner` | — | Owner
-| `page-contact` | — | Contact
-| `page-email` | — | Email
-| `page-orcid` | — | ORCID
-| `page-affiliation` | — | Affiliation
-| `page-organization` | `page-affiliation` | Organization
 | `page-created` | — | Created
 | `page-date-created` | `page-created` | Created
 | `page-published` | — | Published
@@ -132,6 +119,14 @@ Only set attributes render. Aliases resolve to the same label (canonical wins if
 | `page-revnumber` | `page-revision` | Revision
 | `page-version` | — | Doc version
 | `page-edition` | — | Edition
+|===
+
+=== Footer (colophon: rights, locale, identifiers, relations)
+
+[cols="2,2,3"]
+|===
+| Attribute | Alias of | Label
+
 | `page-license` | — | License
 | `page-licence` | `page-license` | License
 | `page-spdx` | — | SPDX
@@ -141,6 +136,11 @@ Only set attributes render. Aliases resolve to the same label (canonical wins if
 | `page-funding` | — | Funding
 | `page-sponsor` | `page-funding` | Sponsor
 | `page-acknowledgements` | — | Acknowledgements
+| `page-contact` | — | Contact
+| `page-email` | — | Email
+| `page-orcid` | — | ORCID
+| `page-affiliation` | — | Affiliation
+| `page-organization` | `page-affiliation` | Organization
 | `page-lang` | — | Language
 | `page-language` | `page-lang` | Language
 | `page-locale` | — | Locale
@@ -174,8 +174,8 @@ When present, values are also emitted as `<meta>` tags (`author`, `keywords`, `d
 
 == Behavior
 
-* Lead aside prepended when any lead field is set (document provenance **before** body / in-doc TOC).
-* Footer aside appended when any footer field is set.
+* Lead aside prepended when any lead field is set (orientation + provenance **before** body / in-doc TOC).
+* Footer aside appended only when colophon fields are set (license, DOI, …).
 * Markup: `<aside class="page-context …"><table class="page-context-table">…</table></aside>` — aside is the panel; compact key/value rows inside (keys left-aligned).
 * Idempotent if a block with role `page-context-lead` / `page-context-footer` already exists.
 * Injects baseline CSS + meta via DocInfo `head` (themes may refine with `.page-context` tokens).
