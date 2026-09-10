@@ -117,4 +117,14 @@ Hi.
       assert.ok(attrs.has(name), `missing ${name}`)
     }
   })
+
+  it('ships independent table CSS without zebra and with cell dividers', () => {
+    const css = _internal.CSS
+    assert.match(css, /\.page-context-table/)
+    assert.match(css, /--page-context-divider/)
+    assert.match(css, /--page-context-bg/)
+    assert.match(css, /nth-child\(even\)/)
+    assert.match(css, /background:\s*transparent\s*!important/)
+    assert.match(css, /font-size:\s*0\.82em/)
+  })
 })

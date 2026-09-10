@@ -1,5 +1,10 @@
 = Changelog
 
+== 0.3.2 — 2026-09-09
+
+* Metadata table styling is fully independent of theme/doc table rules: no zebra/alternating row fills; thin outer border + thin inner cell dividers; muted type at in-doc TOC scale (`0.82em`); subtle surface wash in light and dark.
+* High-specificity resets so Valentus/dark-mode `table tbody tr:nth-child(even)` (and similar) cannot restripe `.page-context-table`.
+
 == 0.3.1 — 2026-09-09
 
 * README: soft guidance — style `page-*` presentation in this package (point of interpretation), not via per-hub supplemental CSS forks.
