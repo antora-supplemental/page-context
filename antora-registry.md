@@ -9,8 +9,8 @@ Dev-Centr (and similar) docs need a stable way to declare **who a page is for**,
 
 This Asciidoctor extension (register under Antora `asciidoc.extensions`) reads a large `page-*` attribute catalog — oriented toward Dublin Core, Quarto/SSG front matter, AsciiDoc revision fields, and Diátaxis — and injects:
 
-- A **lead** aside (audience, usage, type, status, keywords, …)
-- A **footer** aside (authors, dates, license, identifiers, …)
+- A **lead** aside (audience, usage, authorship, dates, status, …)
+- A **footer** aside (license, identifiers, locale, see-also — colophon only)
 - Matching **HTML `<meta>`** tags (`dcterms.*`, `og:*`, `article:*`, `citation_*`, …)
 
 Agent-assisted authorship uses `{product} on behalf of {human}`.
