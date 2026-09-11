@@ -13,13 +13,13 @@
 
 Renders **Dublin Core–style**, Quarto/SSG, AsciiDoc revision, and Diátaxis-oriented metadata from `page-*` attributes into a slim teaching byline + lead table (orientation), a footer aside (authorship / classification / colophon), and HTML `<meta>` tags.
 
-Schema version:: `0.6.5`
+Schema version:: `0.6.6`
 
 == Install
 
 [source,bash]
 ----
-pnpm add -D github:antora-supplemental/page-context#v0.6.5
+pnpm add -D github:antora-supplemental/page-context#v0.6.6
 # after npm publish: pnpm add -D @antora-supplemental/page-context
 ----
 
@@ -60,7 +60,7 @@ Displayed as:: `{human} [avatar] via {product}` — e.g. `Ryan Johnson` + circul
 
 Do **not** also paste hand-written `Audience role::` / author labeled lists when this extension is active.
 
-== Layout (0.6.5)
+== Layout (0.6.6)
 
 [cols="1,3"]
 |===

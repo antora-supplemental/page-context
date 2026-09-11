@@ -53,6 +53,13 @@ Body paragraph.
     assert.doesNotMatch(lead, /Document type/)
     assert.match(footer, /Original author/)
     assert.match(footer, /<span class="page-context-author">/)
+    // Antora drops head docinfo; the stylesheet must ship inside page content.
+    const content = html.match(/<div id="content">([\s\S]*)<div id="footer">/)[1]
+    assert.match(content, /<style type="text\/css">/)
+    assert.match(content, /\.page-context-byline \.page-context-author/)
+    assert.match(content, /\.page-context-footer \.page-context-author/)
+    assert.match(content, /gap:\s*0\.4rem/)
+    assert.equal((content.match(/<style type="text\/css">/g) || []).length, 1)
     assert.match(lead, /Ryan Johnson/)
     assert.match(lead, /<p class="page-context-byline">[\s\S]*<span class="page-context-author">/)
     assert.match(lead, /page-context-author-name[\s\S]*page-context-avatar-wrap[\s\S]*page-context-via/)
@@ -103,7 +110,7 @@ Hi.
     assert.match(html, /name="keywords" content="antora, metadata"/)
     assert.match(html, /name="dcterms.audience" content="Maintainers"/)
     assert.match(html, /name="citation_doi" content="10.example\/demo"/)
-    assert.match(html, /name="page-context-schema" content="0\.6\.5"/)
+    assert.match(html, /name="page-context-schema" content="0\.6\.6"/)
   })
 
   it('honors aliases (page-type → Document type) in footer', () => {
@@ -191,7 +198,7 @@ Hi.
     assert.equal(byAttr['page-last-edited'], 'footer')
     assert.equal(byAttr['page-license'], 'footer')
     assert.equal(byAttr['page-doi'], 'footer')
-    assert.equal(_internal.SCHEMA_VERSION, '0.6.5')
+    assert.equal(_internal.SCHEMA_VERSION, '0.6.6')
   })
 
   it('ships independent table CSS without zebra and with byline/avatar', () => {

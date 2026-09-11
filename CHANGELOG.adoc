@@ -1,5 +1,10 @@
 = Changelog
 
+== 0.6.6 — 2026-09-10
+
+* **Author cluster spacing in Antora pages:** embed the stylesheet in the first page-context block. Antora drops Asciidoctor head docinfo, so the flex `gap` on `.page-context-author` never reached the lead byline or footer author cells.
+* Schema version attribute `0.6.6`.
+
 == 0.6.5 — 2026-09-10
 
 * **Author cluster spacing:** flex `gap` on `.page-context-author` (lead byline and footer author cells) so the linked name, circular avatar, and `via {product}` stay separated. HTML whitespace between those pieces is collapsed, so the gap is the spacing.
