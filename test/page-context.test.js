@@ -52,7 +52,9 @@ Body paragraph.
     assert.doesNotMatch(lead, /Original author/)
     assert.doesNotMatch(lead, /Document type/)
     assert.match(footer, /Original author/)
+    assert.match(footer, /<span class="page-context-author">/)
     assert.match(lead, /Ryan Johnson/)
+    assert.match(lead, /<p class="page-context-byline">[\s\S]*<span class="page-context-author">/)
     assert.match(lead, /page-context-author-name[\s\S]*page-context-avatar-wrap[\s\S]*page-context-via/)
     assert.match(lead, /<span class="page-context-via">via Cursor<\/span>/)
     assert.doesNotMatch(lead, /\(via Cursor\)/)
@@ -101,7 +103,7 @@ Hi.
     assert.match(html, /name="keywords" content="antora, metadata"/)
     assert.match(html, /name="dcterms.audience" content="Maintainers"/)
     assert.match(html, /name="citation_doi" content="10.example\/demo"/)
-    assert.match(html, /name="page-context-schema" content="0\.6\.4"/)
+    assert.match(html, /name="page-context-schema" content="0\.6\.5"/)
   })
 
   it('honors aliases (page-type → Document type) in footer', () => {
@@ -189,7 +191,7 @@ Hi.
     assert.equal(byAttr['page-last-edited'], 'footer')
     assert.equal(byAttr['page-license'], 'footer')
     assert.equal(byAttr['page-doi'], 'footer')
-    assert.equal(_internal.SCHEMA_VERSION, '0.6.4')
+    assert.equal(_internal.SCHEMA_VERSION, '0.6.5')
   })
 
   it('ships independent table CSS without zebra and with byline/avatar', () => {
@@ -200,6 +202,10 @@ Hi.
     assert.match(css, /\.page-context-avatar/)
     assert.match(css, /\.page-context-avatar-wrap/)
     assert.match(css, /\.page-context-author[\s\S]*align-items:\s*center/)
+    assert.match(css, /\.page-context-byline \.page-context-author/)
+    assert.match(css, /\.page-context-footer \.page-context-author/)
+    assert.match(css, /\.page-context-author[\s\S]*display:\s*inline-flex\s*!important/)
+    assert.match(css, /\.page-context-author[\s\S]*gap:\s*0\.4rem/)
     assert.match(css, /\.page-context-avatar-wrap[\s\S]*border-radius:\s*50%/)
     assert.match(css, /\.page-context-avatar-wrap[\s\S]*overflow:\s*hidden/)
     assert.match(css, /\.page-context-avatar[\s\S]*object-fit:\s*cover/)

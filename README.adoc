@@ -13,13 +13,13 @@
 
 Renders **Dublin Core–style**, Quarto/SSG, AsciiDoc revision, and Diátaxis-oriented metadata from `page-*` attributes into a slim teaching byline + lead table (orientation), a footer aside (authorship / classification / colophon), and HTML `<meta>` tags.
 
-Schema version:: `0.6.4`
+Schema version:: `0.6.5`
 
 == Install
 
 [source,bash]
 ----
-pnpm add -D github:antora-supplemental/page-context#v0.6.4
+pnpm add -D github:antora-supplemental/page-context#v0.6.5
 # after npm publish: pnpm add -D @antora-supplemental/page-context
 ----
 
@@ -60,7 +60,7 @@ Displayed as:: `{human} [avatar] via {product}` — e.g. `Ryan Johnson` + circul
 
 Do **not** also paste hand-written `Audience role::` / author labeled lists when this extension is active.
 
-== Layout (0.6.4)
+== Layout (0.6.5)
 
 [cols="1,3"]
 |===
@@ -70,7 +70,7 @@ Do **not** also paste hand-written `Audience role::` / author labeled lists when
 | Seamless document chrome (no border/background). Holds the byline and the inner panel.
 
 | **Byline** (`.page-context-byline`)
-| `Last updated {date} by {linked name} {circular avatar} via {agent}` — child of the lead aside, **sibling** of the panel (not inside the table). Avatar is after the name; agent product is plain text.
+| `Last updated {date} by {linked name} {circular avatar} via {agent}` — child of the lead aside, **sibling** of the panel (not inside the table). Avatar is after the name; agent product is plain text. Flex `gap` on `.page-context-author` separates name, avatar, and `via` (same cluster in footer author cells).
 
 | **Lead panel** (`.page-context-panel`)
 | Subtle border + wash + padding wrapping **only** the key/value table (Audience role, Usage, Status, Source, …).

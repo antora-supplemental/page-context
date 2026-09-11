@@ -1,5 +1,10 @@
 = Changelog
 
+== 0.6.5 — 2026-09-10
+
+* **Author cluster spacing:** flex `gap` on `.page-context-author` (lead byline and footer author cells) so the linked name, circular avatar, and `via {product}` stay separated. HTML whitespace between those pieces is collapsed, so the gap is the spacing.
+* Schema version attribute `0.6.5`.
+
 == 0.6.4 — 2026-09-10
 
 * **Component home lead shell:** still emit an empty `.page-context-lead` + `.page-context-panel` table (header zone) when audience/usage chrome is suppressed, so `@antora-supplemental/page-edit` can attach the Source row instead of floating View|Edit.
