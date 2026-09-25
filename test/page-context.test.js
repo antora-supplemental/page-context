@@ -110,7 +110,7 @@ Hi.
     assert.match(html, /name="keywords" content="antora, metadata"/)
     assert.match(html, /name="dcterms.audience" content="Maintainers"/)
     assert.match(html, /name="citation_doi" content="10.example\/demo"/)
-    assert.match(html, /name="page-context-schema" content="0\.6\.6"/)
+    assert.match(html, /name="page-context-schema" content="0\.6\.7"/)
   })
 
   it('honors aliases (page-type → Document type) in footer', () => {
@@ -198,7 +198,7 @@ Hi.
     assert.equal(byAttr['page-last-edited'], 'footer')
     assert.equal(byAttr['page-license'], 'footer')
     assert.equal(byAttr['page-doi'], 'footer')
-    assert.equal(_internal.SCHEMA_VERSION, '0.6.6')
+    assert.equal(_internal.SCHEMA_VERSION, '0.6.7')
   })
 
   it('ships independent table CSS without zebra and with byline/avatar', () => {

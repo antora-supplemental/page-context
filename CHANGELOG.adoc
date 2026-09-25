@@ -1,5 +1,10 @@
 = Changelog
 
+== 0.6.7 — 2026-09-25
+
+* **Source-only lead layout:** shrink-wrap `.page-context-table` when the only row is `.page-context-source-row`, and pack th/td padding so key→value is not full article width on component homes.
+* Schema version attribute `0.6.7`.
+
 == 0.6.6 — 2026-09-10
 
 * **Author cluster spacing in Antora pages:** embed the stylesheet in the first page-context block. Antora drops Asciidoctor head docinfo, so the flex `gap` on `.page-context-author` never reached the lead byline or footer author cells.
