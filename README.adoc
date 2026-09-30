@@ -13,7 +13,7 @@
 
 Renders **Dublin Core–style**, Quarto/SSG, AsciiDoc revision, and Diátaxis-oriented metadata from `page-*` attributes into a slim teaching byline + lead table (orientation), a footer aside (authorship / classification / colophon), and HTML `<meta>` tags.
 
-Schema version:: `0.6.6`
+Schema version:: `0.6.8`
 
 == Install
 
@@ -39,6 +39,8 @@ asciidoc:
   attributes:
     page-context-active: ''
     page-context-keyword-base: '/home/keywords'
+    # Author credit chrome: with-icon (default) or without-icon (linked name only, no avatar)
+    page-context-author-avatar: with-icon
 ----
 
 == Minimal house schema (Dev-Centr)
@@ -58,6 +60,11 @@ Agent-assisted credit (source attr):: `{product} on behalf of {human}`
 +
 Displayed as:: `{human} [avatar] via {product}` — e.g. `Ryan Johnson` + circular pic + `via Cursor` (no parentheses; agent name is not linked)
 
+Author chrome mode:: Set `page-context-author-avatar` on the playbook (or per page) to choose the variant:
+
+* `with-icon` / `true` / `on` (default when unset) — linked display name, circular GitHub avatar, then `via {product}`.
+* `without-icon` / `false` / `off` — linked display name and `via {product}` only (no avatar). Use this on hubs that want text-only credits while keeping GitHub profile links.
+
 Do **not** also paste hand-written `Audience role::` / author labeled lists when this extension is active.
 
 == Layout (0.6.6)
@@ -70,7 +77,7 @@ Do **not** also paste hand-written `Audience role::` / author labeled lists when
 | Seamless document chrome (no border/background). Holds the byline and the inner panel.
 
 | **Byline** (`.page-context-byline`)
-| `Last updated {date} by {linked name} {circular avatar} via {agent}` — child of the lead aside, **sibling** of the panel (not inside the table). Avatar is after the name; agent product is plain text. Flex `gap` on `.page-context-author` separates name, avatar, and `via` (same cluster in footer author cells).
+| `Last updated {date} by {linked name} {optional circular avatar} via {agent}` — child of the lead aside, **sibling** of the panel (not inside the table). Avatar follows the name when `page-context-author-avatar` is on (default); agent product is plain text. Flex `gap` on `.page-context-author` separates name, avatar (if any), and `via` (same cluster in footer author cells).
 
 | **Lead panel** (`.page-context-panel`)
 | Subtle border + wash + padding wrapping **only** the key/value table (Audience role, Usage, Status, Source, …).
@@ -215,7 +222,9 @@ Only set attributes render. Aliases resolve to the same label (canonical wins if
 | `page-schema-version` | — | Set automatically
 |===
 
-GitHub login overrides:: `page-orig-author-github`, `page-last-author-github`, `page-author-github`, or site map `page-context-authors` (`Name=login;…` or JSON object).
+GitHub login overrides:: `page-orig-author-github`, `page-last-author-github`, `page-author-github`, or site map `page-context-authors` (`Name=login;…` or JSON object). Credits that are already a GitHub handle (`@login`) link without a separate override.
+
+Author avatar:: `page-context-author-avatar` — `with-icon` (default) or `without-icon` (see playbook example above).
 
 Inspired by Dublin Core, Quarto/Pandoc front matter, AsciiDoc `author`/`revdate`/`revnumber`, Open Graph / citation_* meta, and common SSG keys (Hugo/Jekyll/MkDocs).
 
