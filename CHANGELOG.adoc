@@ -1,5 +1,11 @@
 = Changelog
 
+== 0.6.9 — 2026-09-30
+
+* **Author link label:** `page-context-author-label` (playbook or per page) chooses what the linked author token shows when a GitHub login is known: `display-name` (default, credit / page name), `username` (login), or `both` (`{display} ({login})`, deduped when identical). Independent of `page-context-author-avatar`.
+* **Byline markup:** teaching byline is a normal inline sentence (`Last updated ` + `<time>` + ` by ` + author cluster) with spaces in HTML — no flex `gap` on `.page-context-byline`. Author cluster spacing uses literal spaces in markup (not flex gap).
+* Schema version attribute `0.6.9`.
+
 == 0.6.8 — 2026-09-30
 
 * **Author avatar toggle:** `page-context-author-avatar` (playbook/site attribute; overridable per page) chooses **with-icon** (linked name + circular GitHub avatar + `via {product}`) vs **without-icon** (linked name + `via {product}` only). Default is **on** when unset — same as before for sites that already resolve a GitHub login.

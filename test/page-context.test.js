@@ -58,7 +58,7 @@ Body paragraph.
     assert.match(content, /<style type="text\/css">/)
     assert.match(content, /\.page-context-byline \.page-context-author/)
     assert.match(content, /\.page-context-footer \.page-context-author/)
-    assert.match(content, /gap:\s*0\.4rem/)
+    assert.match(lead, /Last updated <time datetime="2026-08-25">2026-08-25<\/time> by /)
     assert.equal((content.match(/<style type="text\/css">/g) || []).length, 1)
     assert.match(lead, /Ryan Johnson/)
     assert.match(lead, /<p class="page-context-byline">[\s\S]*<span class="page-context-author">/)
@@ -110,7 +110,7 @@ Hi.
     assert.match(html, /name="keywords" content="antora, metadata"/)
     assert.match(html, /name="dcterms.audience" content="Maintainers"/)
     assert.match(html, /name="citation_doi" content="10.example\/demo"/)
-    assert.match(html, /name="page-context-schema" content="0\.6\.8"/)
+    assert.match(html, /name="page-context-schema" content="0\.6\.9"/)
   })
 
   it('honors aliases (page-type → Document type) in footer', () => {
@@ -198,7 +198,81 @@ Hi.
     assert.equal(byAttr['page-last-edited'], 'footer')
     assert.equal(byAttr['page-license'], 'footer')
     assert.equal(byAttr['page-doi'], 'footer')
-    assert.equal(_internal.SCHEMA_VERSION, '0.6.8')
+    assert.equal(_internal.SCHEMA_VERSION, '0.6.9')
+  })
+
+  it('byline uses block flow without flex gap (ordinary spaces between fragments)', () => {
+    const html = convert(`= Demo
+:page-audience: Readers
+:page-last-author: Cursor agent on behalf of Ryan Johnson
+:page-last-edited: 2026-08-25
+:page-orig-author: Ryan Johnson
+
+Hi.
+`)
+    const byline = html.match(/<p class="page-context-byline">([\s\S]*?)<\/p>/)[1]
+    assert.match(byline, /^Last updated <time/)
+    const bylineCss = _internal.CSS.match(
+      /\.page-context-byline,\n\.doc \.page-context-byline \{[\s\S]*?\}/
+    )[0]
+    assert.doesNotMatch(bylineCss, /gap:/)
+    assert.match(bylineCss, /display:\s*block/)
+  })
+
+  it('page-context-author-label username shows GitHub login in link text', () => {
+    const A = Asciidoctor()
+    const doc = A.load(
+      `= Demo
+:page-context-author-label: username
+:page-last-author: Cursor agent on behalf of Ryan Johnson
+`,
+      { safe: 'safe' }
+    )
+    const html = _internal.formatAuthorHtml(doc, 'Cursor agent on behalf of Ryan Johnson', 'last')
+    assert.match(
+      html,
+      /<a class="page-context-author-name" href="https:\/\/github\.com\/AMDphreak"[^>]*>AMDphreak<\/a>/
+    )
+  })
+
+  it('page-context-author-label both combines display name and login', () => {
+    const A = Asciidoctor()
+    const doc = A.load(
+      `= Demo
+:page-context-author-label: both
+:page-last-author: Cursor agent on behalf of Ryan Johnson
+`,
+      { safe: 'safe' }
+    )
+    const html = _internal.formatAuthorHtml(doc, 'Cursor agent on behalf of Ryan Johnson', 'last')
+    assert.match(html, />Ryan Johnson \(AMDphreak\)<\/a>/)
+  })
+
+  it('author label and avatar settings combine independently', () => {
+    const html = convert(`= Demo
+:page-audience: Readers
+:page-context-author-label: username
+:page-context-author-avatar: without-icon
+:page-last-author-github: AMDphreak
+:page-last-author: amdphreak via cursor-agent
+:page-last-edited: 2026-09-10
+:page-orig-author: OpenShellOrg
+
+Hi.
+`)
+    const byline = html.match(/<p class="page-context-byline">([\s\S]*?)<\/p>/)[1]
+    assert.match(byline, />AMDphreak<\/a>/)
+    assert.doesNotMatch(byline, /page-context-avatar/)
+    assert.match(byline, /via cursor-agent/)
+  })
+
+  it('default author label is display-name from page credit', () => {
+    assert.equal(_internal.authorLabelMode(Asciidoctor().load('= Demo\n', { safe: 'safe' })), 'display-name')
+    assert.equal(
+      _internal.formatAuthorLinkLabel('Ryan Johnson', 'AMDphreak', 'display-name'),
+      'Ryan Johnson'
+    )
+    assert.equal(_internal.formatAuthorLinkLabel('amdphreak', 'AMDphreak', 'both'), 'AMDphreak')
   })
 
   it('links GitHub login without avatar when page-context-author-avatar is off', () => {
@@ -276,11 +350,10 @@ Hi.
     assert.match(css, /\.page-context-panel/)
     assert.match(css, /\.page-context-avatar/)
     assert.match(css, /\.page-context-avatar-wrap/)
-    assert.match(css, /\.page-context-author[\s\S]*align-items:\s*center/)
+    assert.match(css, /\.page-context-avatar-wrap[\s\S]*align-items:\s*center/)
     assert.match(css, /\.page-context-byline \.page-context-author/)
     assert.match(css, /\.page-context-footer \.page-context-author/)
-    assert.match(css, /\.page-context-author[\s\S]*display:\s*inline-flex\s*!important/)
-    assert.match(css, /\.page-context-author[\s\S]*gap:\s*0\.4rem/)
+    assert.match(css, /\.page-context-author[\s\S]*display:\s*inline/)
     assert.match(css, /\.page-context-avatar-wrap[\s\S]*border-radius:\s*50%/)
     assert.match(css, /\.page-context-avatar-wrap[\s\S]*overflow:\s*hidden/)
     assert.match(css, /\.page-context-avatar[\s\S]*object-fit:\s*cover/)

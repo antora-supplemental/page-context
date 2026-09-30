@@ -13,7 +13,7 @@
 
 Renders **Dublin Core–style**, Quarto/SSG, AsciiDoc revision, and Diátaxis-oriented metadata from `page-*` attributes into a slim teaching byline + lead table (orientation), a footer aside (authorship / classification / colophon), and HTML `<meta>` tags.
 
-Schema version:: `0.6.8`
+Schema version:: `0.6.9`
 
 == Install
 
@@ -39,7 +39,9 @@ asciidoc:
   attributes:
     page-context-active: ''
     page-context-keyword-base: '/home/keywords'
-    # Author credit chrome: with-icon (default) or without-icon (linked name only, no avatar)
+    # Linked author token: display-name (default), username, or both
+    page-context-author-label: display-name
+    # GitHub avatar in author cluster: with-icon (default) or without-icon
     page-context-author-avatar: with-icon
 ----
 
@@ -60,10 +62,22 @@ Agent-assisted credit (source attr):: `{product} on behalf of {human}`
 +
 Displayed as:: `{human} [avatar] via {product}` — e.g. `Ryan Johnson` + circular pic + `via Cursor` (no parentheses; agent name is not linked)
 
-Author chrome mode:: Set `page-context-author-avatar` on the playbook (or per page) to choose the variant:
+Author settings (independent):: When a GitHub login resolves, configure two playbook attrs (each overridable per page):
 
-* `with-icon` / `true` / `on` (default when unset) — linked display name, circular GitHub avatar, then `via {product}`.
-* `without-icon` / `false` / `off` — linked display name and `via {product}` only (no avatar). Use this on hubs that want text-only credits while keeping GitHub profile links.
+`page-context-author-label` — text inside the profile link:
+
+* `display-name` / `name` (default) — human name from the `page-*-author` credit (e.g. `Ryan Johnson`).
+* `username` / `login` — GitHub login (e.g. `AMDphreak`).
+* `both` / `combined` — `{display-name} ({login})`, omitting the parenthetical when they match.
+
+`page-context-author-avatar` — icon after the link:
+
+* `with-icon` / `true` / `on` (default) — circular GitHub avatar, then `via {product}`.
+* `without-icon` / `false` / `off` — no avatar; link + `via {product}` only.
+
+Example combinations for OpenShell-style hubs: `page-context-author-label: username` + `page-context-author-avatar: without-icon` → `amdphreak` linked, no icon. `display-name` + `with-icon` → `Ryan Johnson` + avatar (previous default).
+
+The teaching byline is plain inline copy: `Last updated {date} by {author…}` with spaces in the HTML (not flex gap between date and author).
 
 Do **not** also paste hand-written `Audience role::` / author labeled lists when this extension is active.
 
@@ -77,7 +91,7 @@ Do **not** also paste hand-written `Audience role::` / author labeled lists when
 | Seamless document chrome (no border/background). Holds the byline and the inner panel.
 
 | **Byline** (`.page-context-byline`)
-| `Last updated {date} by {linked name} {optional circular avatar} via {agent}` — child of the lead aside, **sibling** of the panel (not inside the table). Avatar follows the name when `page-context-author-avatar` is on (default); agent product is plain text. Flex `gap` on `.page-context-author` separates name, avatar (if any), and `via` (same cluster in footer author cells).
+| `Last updated {date} by {linked author token} {optional avatar} via {agent}` — inline sentence in a `<p>` (spaces in markup). Link text follows `page-context-author-label`; avatar follows `page-context-author-avatar`. Same author cluster in footer cells. Agent product is plain text.
 
 | **Lead panel** (`.page-context-panel`)
 | Subtle border + wash + padding wrapping **only** the key/value table (Audience role, Usage, Status, Source, …).
@@ -223,6 +237,8 @@ Only set attributes render. Aliases resolve to the same label (canonical wins if
 |===
 
 GitHub login overrides:: `page-orig-author-github`, `page-last-author-github`, `page-author-github`, or site map `page-context-authors` (`Name=login;…` or JSON object). Credits that are already a GitHub handle (`@login`) link without a separate override.
+
+Author label:: `page-context-author-label` — `display-name` (default), `username`, or `both`.
 
 Author avatar:: `page-context-author-avatar` — `with-icon` (default) or `without-icon` (see playbook example above).
 
