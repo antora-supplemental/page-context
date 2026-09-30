@@ -110,7 +110,7 @@ Hi.
     assert.match(html, /name="keywords" content="antora, metadata"/)
     assert.match(html, /name="dcterms.audience" content="Maintainers"/)
     assert.match(html, /name="citation_doi" content="10.example\/demo"/)
-    assert.match(html, /name="page-context-schema" content="0\.6\.7"/)
+    assert.match(html, /name="page-context-schema" content="0\.6\.8"/)
   })
 
   it('honors aliases (page-type → Document type) in footer', () => {
@@ -198,7 +198,75 @@ Hi.
     assert.equal(byAttr['page-last-edited'], 'footer')
     assert.equal(byAttr['page-license'], 'footer')
     assert.equal(byAttr['page-doi'], 'footer')
-    assert.equal(_internal.SCHEMA_VERSION, '0.6.7')
+    assert.equal(_internal.SCHEMA_VERSION, '0.6.8')
+  })
+
+  it('links GitHub login without avatar when page-context-author-avatar is off', () => {
+    const A = Asciidoctor()
+    const doc = A.load(
+      `= Demo
+:page-last-author-github: AMDphreak
+:page-context-author-avatar: without-icon
+:page-last-author: amdphreak via cursor-agent
+`,
+      { safe: 'safe' }
+    )
+    const html = _internal.formatAuthorHtml(doc, 'amdphreak via cursor-agent', 'last')
+    assert.match(
+      html,
+      /<a class="page-context-author-name" href="https:\/\/github\.com\/AMDphreak"[^>]*>amdphreak<\/a>/
+    )
+    assert.doesNotMatch(html, /page-context-avatar/)
+    assert.match(html, /<span class="page-context-via">via cursor-agent<\/span>/)
+  })
+
+  it('playbook without page-context-author-avatar keeps circular avatar when login known', () => {
+    const html = convert(`= Demo
+:page-audience: Readers
+:page-last-author: Cursor agent on behalf of Ryan Johnson
+:page-last-edited: 2026-09-10
+:page-orig-author: Ryan Johnson
+
+Hi.
+`)
+    assert.match(html, /page-context-avatar-wrap/)
+    assert.match(html, /github\.com\/AMDphreak/)
+  })
+
+  it('page-context-author-avatar: false suppresses avatar but keeps GitHub link', () => {
+    const html = convert(`= Demo
+:page-audience: Readers
+:page-context-author-avatar: false
+:page-last-author: Cursor agent on behalf of Ryan Johnson
+:page-last-edited: 2026-09-10
+:page-orig-author: Ryan Johnson
+
+Hi.
+`)
+    assert.match(html, /<a class="page-context-author-name" href="https:\/\/github\.com\/AMDphreak"/)
+    const authorClusters = html.match(/<span class="page-context-author">[\s\S]*?<\/span>/g) || []
+    assert.ok(authorClusters.length > 0)
+    for (const cluster of authorClusters) {
+      assert.doesNotMatch(cluster, /page-context-avatar-wrap/)
+      assert.doesNotMatch(cluster, /page-context-avatar"/)
+    }
+  })
+
+  it('authorAvatarEnabled defaults true and accepts with-icon / without-icon aliases', () => {
+    const A = Asciidoctor()
+    const docDefault = A.load('= Demo\n', { safe: 'safe' })
+    assert.equal(_internal.authorAvatarEnabled(docDefault), true)
+    const docOff = A.load('= Demo\n:page-context-author-avatar: without-icon\n', { safe: 'safe' })
+    assert.equal(_internal.authorAvatarEnabled(docOff), false)
+    const docOn = A.load('= Demo\n:page-context-author-avatar: with-icon\n', { safe: 'safe' })
+    assert.equal(_internal.authorAvatarEnabled(docOn), true)
+  })
+
+  it('resolves @handle in author credit as GitHub login for linking', () => {
+    const A = Asciidoctor()
+    const doc = A.load('= Demo\n:page-last-author: @AMDphreak via Cursor\n', { safe: 'safe' })
+    const html = _internal.formatAuthorHtml(doc, '@AMDphreak via Cursor', 'last')
+    assert.match(html, /href="https:\/\/github\.com\/AMDphreak"/)
   })
 
   it('ships independent table CSS without zebra and with byline/avatar', () => {

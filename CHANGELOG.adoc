@@ -1,5 +1,11 @@
 = Changelog
 
+== 0.6.8 — 2026-09-30
+
+* **Author avatar toggle:** `page-context-author-avatar` (playbook/site attribute; overridable per page) chooses **with-icon** (linked name + circular GitHub avatar + `via {product}`) vs **without-icon** (linked name + `via {product}` only). Default is **on** when unset — same as before for sites that already resolve a GitHub login.
+* **@handle credits:** author display values starting with `@` are treated as GitHub logins for linking (and optional avatar).
+* Schema version attribute `0.6.8`.
+
 == 0.6.7 — 2026-09-25
 
 * **Source-only lead layout:** shrink-wrap `.page-context-table` when the only row is `.page-context-source-row`, and pack th/td padding so key→value is not full article width on component homes.
