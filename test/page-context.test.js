@@ -110,7 +110,7 @@ Hi.
     assert.match(html, /name="keywords" content="antora, metadata"/)
     assert.match(html, /name="dcterms.audience" content="Maintainers"/)
     assert.match(html, /name="citation_doi" content="10.example\/demo"/)
-    assert.match(html, /name="page-context-schema" content="0\.6\.9"/)
+    assert.match(html, /name="page-context-schema" content="0\.7\.0"/)
   })
 
   it('honors aliases (page-type → Document type) in footer', () => {
@@ -198,7 +198,7 @@ Hi.
     assert.equal(byAttr['page-last-edited'], 'footer')
     assert.equal(byAttr['page-license'], 'footer')
     assert.equal(byAttr['page-doi'], 'footer')
-    assert.equal(_internal.SCHEMA_VERSION, '0.6.9')
+    assert.equal(_internal.SCHEMA_VERSION, '0.7.0')
   })
 
   it('byline uses block flow without flex gap (ordinary spaces between fragments)', () => {
@@ -471,6 +471,68 @@ Hi.
 Hi.
 `)
     assert.match(html, /href="\/docs\/keywords\/antora\/"/)
+  })
+
+  it('structured author links self-hosted GitLab profile and avatar', () => {
+    const raw =
+      'name="Ryan Johnson"; username=AMDphreak; provider=gitlab; url=https://git.example.com/AMDphreak'
+    const A = Asciidoctor()
+    const doc = A.load('= Demo\n', { safe: 'safe' })
+    const html = _internal.formatAuthorHtml(doc, raw, 'orig')
+    assert.match(
+      html,
+      /<a class="page-context-author-name" href="https:\/\/git\.example\.com\/AMDphreak"[^>]*>Ryan Johnson<\/a>/
+    )
+    assert.match(html, /src="https:\/\/git\.example\.com\/AMDphreak\/avatar_url"/)
+    assert.doesNotMatch(html, /github\.com/)
+  })
+
+  it('structured gitlab.com defaults profile URL when url omitted', () => {
+    const raw = 'name=Ada Lovelace; username=ada; provider=gitlab'
+    const A = Asciidoctor()
+    const doc = A.load('= Demo\n', { safe: 'safe' })
+    const html = _internal.formatAuthorHtml(doc, raw, 'orig')
+    assert.match(html, /href="https:\/\/gitlab\.com\/ada"/)
+    assert.match(html, /src="https:\/\/gitlab\.com\/ada\/avatar_url"/)
+  })
+
+  it('structured author without url on unknown provider stays plain text', () => {
+    const raw = 'name=Custom Author; provider=forge'
+    const A = Asciidoctor()
+    const doc = A.load('= Demo\n', { safe: 'safe' })
+    const html = _internal.formatAuthorHtml(doc, raw, 'orig')
+    assert.match(html, /<span class="page-context-author-name">Custom Author<\/span>/)
+    assert.doesNotMatch(html, /<a class="page-context-author-name"/)
+    assert.doesNotMatch(html, /page-context-avatar/)
+  })
+
+  it('structured author uses page-*-author-github when username omitted', () => {
+    const A = Asciidoctor()
+    const doc = A.load(
+      `= Demo
+:page-orig-author-github: AMDphreak
+`,
+      { safe: 'safe' }
+    )
+    const raw = 'name=Ryan Johnson; provider=github'
+    const html = _internal.formatAuthorHtml(doc, raw, 'orig')
+    assert.match(html, /href="https:\/\/github\.com\/AMDphreak"/)
+    assert.match(html, /github\.com\/AMDphreak\.png/)
+  })
+
+  it('plain author credit without key=value pairs is unchanged', () => {
+    const parsed = _internal.parseStructuredAuthor('Cursor agent on behalf of Ryan Johnson')
+    assert.equal(parsed, null)
+    assert.equal(_internal.metaPlainCredit('Ryan Johnson'), 'Ryan Johnson')
+  })
+
+  it('parseStructuredAuthor accepts newlines and quoted name', () => {
+    const raw = 'name="Ryan Johnson"\nusername=AMDphreak\nprovider=gitlab\nurl=https://git.example.com/u'
+    const structured = _internal.parseStructuredAuthor(raw)
+    assert.equal(structured.name, 'Ryan Johnson')
+    assert.equal(structured.username, 'AMDphreak')
+    assert.equal(structured.provider, 'gitlab')
+    assert.equal(structured.url, 'https://git.example.com/u')
   })
 
   it('omits duplicate Created/Published when equal to byline date', () => {

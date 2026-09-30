@@ -1,5 +1,10 @@
 = Changelog
 
+== 0.7.0 — 2026-09-30
+
+* **Structured author attrs:** `page-orig-author`, `page-last-author`, and other author footer fields accept optional `name` / `username` / `provider` / `url` key=value form (semicolon- or newline-separated; quoted values). Plain credits without `key=` pairs behave as before. Supports GitLab and self-hosted GitLab profile + avatar URLs; does not guess forge from `url`. `page-*-author-github` still supplies `username` when the structured value omits it.
+* Schema version attribute `0.7.0`.
+
 == 0.6.9 — 2026-09-30
 
 * **Author link label:** `page-context-author-label` (playbook or per page) chooses what the linked author token shows when a GitHub login is known: `display-name` (default, credit / page name), `username` (login), or `both` (`{display} ({login})`, deduped when identical). Independent of `page-context-author-avatar`.
