@@ -13,7 +13,7 @@
 
 Renders **Dublin Core–style**, Quarto/SSG, AsciiDoc revision, and Diátaxis-oriented metadata from `page-*` attributes into a slim teaching byline + lead table (orientation), a footer aside (authorship / classification / colophon), and HTML `<meta>` tags.
 
-Schema version:: `0.6.9`
+Schema version:: `0.7.0`
 
 == Install
 
@@ -237,6 +237,31 @@ Only set attributes render. Aliases resolve to the same label (canonical wins if
 |===
 
 GitHub login overrides:: `page-orig-author-github`, `page-last-author-github`, `page-author-github`, or site map `page-context-authors` (`Name=login;…` or JSON object). Credits that are already a GitHub handle (`@login`) link without a separate override.
+
+=== Structured author (multi-forge)
+
+The same attrs that get author chrome (`page-orig-author`, `page-last-author`, and other footer author fields) accept either a **plain credit string** (unchanged) or a **structured** `key=value` form. If the value has no `key=` pairs, it is treated as a plain name or legacy credit (`{product} on behalf of {human}`, `@handle`, and so on).
+
+Separate keys on one line or across lines; semicolons and newlines separate keys. AsciiDoc line continuation uses a trailing backslash:
+
+[source,asciidoc]
+----
+:page-orig-author: name="Ryan Johnson"; \
+username=AMDphreak; \
+provider=gitlab; \
+url=https://git.example.com/AMDphreak
+----
+
+Keys:
+
+* `name` — display name (human credit; used in meta tags).
+* `username` — forge login (when omitted, `page-*-author-github` and the usual name / `@handle` / `page-context-authors` map still apply).
+* `provider` — icon and default URL scheme: `github` or `gitlab` (the extension does **not** infer provider from `url`).
+* `url` — profile link (required for a self-hosted or other custom host). When omitted and `provider` is `github` or `gitlab`, defaults are `https://github.com/{username}` and `https://gitlab.com/{username}`.
+
+Avatars follow the provider when `page-context-author-avatar` is on: GitHub uses `https://github.com/{username}.png`; GitLab uses `{origin}/{username}/avatar_url` (`origin` from `url` on self-hosted instances). Unknown providers without a known avatar pattern render as linked or plain text only — no invented icon URLs.
+
+`page-context-author-label` and `page-context-author-avatar` behave the same as for GitHub-only pages.
 
 Author label:: `page-context-author-label` — `display-name` (default), `username`, or `both`.
 
