@@ -301,6 +301,13 @@ Hubs may still set brand tokens; avoid duplicating table/aside layout rules in e
 
 Keys use `text-align: left` (UA `th` defaults to center). Keyword links inherit muted text color with underline only. Footer aside has extra top/bottom margin so end-zone metadata is not stuck to the last body block.
 
+== Demo data
+
+* **Supplement lives in extension repo** — this README and product docs use `page-*` attrs as live examples; no separate `demo-data` fixture folder is required for page-context alone.
+* **Stack demos** — compose link:https://github.com/antora-supplemental/demo-data[`demo-data`^] `docs/theme-demo` for teaching-page corpus + register Facto / page-context so attrs render in the lead/footer.
+* Keyword listing generator (`@antora-supplemental/page-context/antora`) needs real pages in `content.sources`; prefer hub components or `theme-demo`, not duplicated copies under `examples/docs`.
+* Pattern: link:https://docs.antora-supplemental.org/docs/ROOT/proposals/demo-data-catalog.html[Demo data catalog^].
+
 == Related
 
 * Registry card: link:antora-registry.md[]
