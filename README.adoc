@@ -311,5 +311,5 @@ Keys use `text-align: left` (UA `th` defaults to center). Keyword links inherit 
 == Related
 
 * Registry card: link:antora-registry.md[]
-* https://github.com/antora-supplemental/page-edit[page-edit] (View \| Edit source row)
+* https://github.com/antora-supplemental/page-edit[page-edit] (Source line: View \| Edit under the title)
 * Dev-Centr policy: `general/documentation.md` in https://github.com/dev-centr/agent-rules[dev-centr/agent-rules]

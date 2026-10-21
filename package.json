@@ -1,6 +1,6 @@
 {
   "name": "@antora-supplemental/page-context",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Asciidoctor/Antora extension: slim byline + page-* metadata, keyword index pages, HTML meta",
   "main": "lib/index.js",
   "exports": {

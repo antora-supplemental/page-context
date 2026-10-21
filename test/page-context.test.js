@@ -381,7 +381,7 @@ Hi.
     assert.doesNotMatch(html, /<table[\s\S]*page-context-byline/)
   })
 
-  it('component home: hides audience/usage; empty lead shell; authorship in footer', () => {
+  it('component home: hides audience/usage; no empty lead shell; authorship in footer', () => {
     const html = convert(`= Component home
 :page-context-surface: component-home
 :page-audience: Readers starting here
@@ -392,9 +392,8 @@ Hi.
 
 Welcome body.
 `)
-    assert.match(html, /aside class="page-context page-context-lead"/)
-    assert.match(html, /page-context-panel/)
-    assert.match(html, /page-context-table/)
+    assert.doesNotMatch(html, /aside class="page-context page-context-lead"/)
+    assert.doesNotMatch(html, /<table class="page-context-table"><tbody><\/tbody>/)
     assert.doesNotMatch(html, /<p class="page-context-byline"/)
     assert.doesNotMatch(html, /<th scope="row">Audience role<\/th>/)
     assert.doesNotMatch(html, /Usage context/)
@@ -405,6 +404,11 @@ Welcome body.
     assert.doesNotMatch(html, /\(via Cursor\)/)
     assert.match(html, /Welcome body/)
     assert.match(html, /name="dcterms.audience" content="Readers starting here"/)
+  })
+
+  it('styles the page-edit Source line and no longer styles a Source table row', () => {
+    assert.match(_internal.CSS, /\.page-context-source-line/)
+    assert.doesNotMatch(_internal.CSS, /page-context-source-row/)
   })
 
   it('component home: auto-detect Antora ROOT index.adoc', () => {
@@ -420,7 +424,7 @@ Hi.
 `)
     assert.doesNotMatch(html, /<th scope="row">Audience role<\/th>/)
     assert.doesNotMatch(html, /Usage context/)
-    assert.match(html, /aside class="page-context page-context-lead"/)
+    assert.doesNotMatch(html, /aside class="page-context page-context-lead"/)
     assert.match(html, /aside class="page-context page-context-footer"/)
     assert.match(html, /Original author/)
     assert.match(html, /Ada/)
