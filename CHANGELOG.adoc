@@ -1,5 +1,9 @@
 = Changelog
 
+== 0.7.2 — 2026-10-21
+
+* **Lead `data-zone="meta"`:** page-context lead aside marks metadata zone for linkinator / theme segmentation (pairs with `@antora-supplemental/linkinator` 0.1.11 defaults).
+
 == 0.7.1 - 2026-10-21
 
 * **Source is not a table row:** removed `.page-context-source-row` styles; added `.page-context-source-line` (flex line under the title) for `@antora-supplemental/page-edit` 0.3.0.
