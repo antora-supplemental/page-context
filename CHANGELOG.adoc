@@ -1,5 +1,9 @@
 = Changelog
 
+== 0.7.3 - 2026-10-28
+
+* **Contrast:** text tokens are defined on `.page-context-source-line` too (it sits outside `.page-context`, so it fell back to `#6b7380`, 3.92:1 on dark). `--page-context-fg` and `--page-context-label` are opaque (`var(--valentus-ink-muted, #5a6270)` light, `#9aa3b2` dark) instead of `color-mix` with transparent; light source label, byline, time and table headers now pass 4.5:1.
+
 == 0.7.2 — 2026-10-21
 
 * **Lead `data-zone="meta"`:** page-context lead aside marks metadata zone for linkinator / theme segmentation (pairs with `@antora-supplemental/linkinator` 0.1.11 defaults).
