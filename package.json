@@ -9,6 +9,8 @@
   },
   "files": [
     "lib/**/*",
+    "docs/**/*",
+    "changelog-details/**/*",
     "README.adoc",
     "CHANGELOG.adoc",
     "LICENSE",

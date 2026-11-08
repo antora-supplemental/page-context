@@ -1,6 +1,17 @@
 = Changelog
+:toclevels: 3
 
-== 0.7.3 - 2026-10-28
+== 2026-11-08
+
+=== Structured AI bylines and public redaction
+
+* Show separate harness/model/session labels, including compact model IDs, while preserving legacy credits.
+* Redact private author information and suppress transcript/custom-attribute publication.
+* link:changelog-details/2026-11-08 - ai-bylines.adoc[Details]
+
+== 2026-10-28
+
+=== Version 0.7.3
 
 * **Contrast:** text tokens are defined on `.page-context-source-line` too (it sits outside `.page-context`, so it fell back to `#6b7380`, 3.92:1 on dark). `--page-context-fg` and `--page-context-label` are opaque (`var(--valentus-ink-muted, #5a6270)` light, `#9aa3b2` dark) instead of `color-mix` with transparent; light source label, byline, time and table headers now pass 4.5:1.
 
@@ -8,7 +19,9 @@
 
 * **Lead `data-zone="meta"`:** page-context lead aside marks metadata zone for linkinator / theme segmentation (pairs with `@antora-supplemental/linkinator` 0.1.11 defaults).
 
-== 0.7.1 - 2026-10-21
+== 2026-10-21
+
+=== Version 0.7.1
 
 * **Source is not a table row:** removed `.page-context-source-row` styles; added `.page-context-source-line` (flex line under the title) for `@antora-supplemental/page-edit` 0.3.0.
 * **No empty component-home lead shell:** component homes that suppress audience/usage no longer emit an empty `.page-context-lead` table just so Source could attach to it (it rendered an empty bordered panel once Source left the table).

@@ -1,0 +1,5 @@
+= 2026-11-08
+
+== Structured AI bylines and public redaction
+
+Adds independent harness/model/session inputs and a small JavaScript mirror of the shared library's public policy. Public author metadata is redacted; legacy credit strings remain supported. See link:../docs/ai-byline-fields.adoc[reference]. No registry publication is included.

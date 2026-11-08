@@ -1,0 +1,22 @@
+= AI byline fields
+
+A public byline can show the person directing a coding tool without losing the model and session that produced the work. Page-context accepts separate harness/model/session fields and keeps old `Cursor agent on behalf of Ryan Johnson` credits working.
+
+== Structured values
+
+[source,asciidoc]
+----
+:page-last-author: name=Ryan Johnson; harness=Cursor; model=exact-model-v9; session=session-123
+----
+
+Alternatively set `page-last-author-harness`, `page-last-author-model` and `page-last-author-session` separately. The same fields with `orig` apply to original authorship. Separate attributes take precedence over structured values. All three provenance fields are open strings; no known-tool/model enum is imposed.
+
+Compact output: `Ryan Johnson via Cursor / exact-model-v9 / session session-123`. IDs are plain opaque labels, never links, access tokens or routes. Missing fields are not invented. HTML markup is escaped after redaction.
+
+== Public redaction mirror
+
+`lib/provenance-redaction.js` is a small tested JavaScript mirror of the public policy in DevCentr's `git-ai-provenance` library (initial foundation `dd7883e`). It is not an unpublished path dependency. Keep the two policies aligned when either changes.
+
+Emails, local paths and recognizable secret/token patterns are redacted in public author labels, provenance fields and author meta tags. Suspicious profile URLs are suppressed; public forge profiles remain linkable. Transcript URLs and custom attributes are never emitted by this byline renderer, a stricter subset of the shared policy (which permits independently verified authenticated transcript URLs and explicitly allowlisted attributes). Nothing fetches transcripts. Session labels are allowed but still reject recognizable credential prefixes.
+
+The detector is conservative defense in depth, not comprehensive DLP. It cannot prove arbitrary text contains no secret. Apply `redactPublicText` to separately handled transcript excerpts; no excerpt surface is introduced here. This extension does not scrub unrelated page body text, source files or Asciidoctor's own unrelated output.

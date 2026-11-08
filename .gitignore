@@ -16,3 +16,8 @@
 !/.github/workflows/notify-docs-hub-extension.yml
 !/.editorconfig
 !/.gitattributes
+
+!docs/
+!docs/**
+!changelog-details/
+!changelog-details/**

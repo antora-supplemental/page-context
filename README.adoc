@@ -7,8 +7,8 @@
 :page-keywords: antora, asciidoctor, metadata, dublin-core, front-matter, keywords
 :page-license: MIT
 :page-orig-author: Ryan Johnson
-:page-last-author: Cursor agent on behalf of Ryan Johnson
-:page-last-edited: 2026-09-10
+:page-last-author: Grok Bot on behalf of Ryan Johnson
+:page-last-edited: 2026-11-08
 :page-lang: en
 
 Renders **Dublin Core–style**, Quarto/SSG, AsciiDoc revision, and Diátaxis-oriented metadata from `page-*` attributes into a slim teaching byline + lead table (orientation), a footer aside (authorship / classification / colophon), and HTML `<meta>` tags.
@@ -54,8 +54,8 @@ asciidoc:
 :page-audience: New Dev-Centr members adopting agent-rules
 :page-usage-context: Full teaching page on the docs hub
 :page-orig-author: Ryan Johnson
-:page-last-author: Cursor agent on behalf of Ryan Johnson
-:page-last-edited: 2026-09-10
+:page-last-author: Grok Bot on behalf of Ryan Johnson
+:page-last-edited: 2026-11-08
 ----
 
 Agent-assisted credit (source attr):: `{product} on behalf of {human}`
@@ -313,3 +313,7 @@ Keys use `text-align: left` (UA `th` defaults to center). Keyword links inherit 
 * Registry card: link:antora-registry.md[]
 * https://github.com/antora-supplemental/page-edit[page-edit] (Source line: View \| Edit under the title)
 * Dev-Centr policy: `general/documentation.md` in https://github.com/dev-centr/agent-rules[dev-centr/agent-rules]
+
+== Structured AI provenance
+
+See link:docs/ai-byline-fields.adoc[AI byline fields] for harness/model/session attributes and the public redaction boundary.
